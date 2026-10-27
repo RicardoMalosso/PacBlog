@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { base } from '../data';
-import { selectedRow, alignLyrics, formatTime, nearbyRow, parseSrt, lyricTime, videoTimeForLyric } from '../lyrics';
+import { selectedRow, alignLyrics, formatTime, nearbyRow, lyricTime, videoTimeForLyric } from '../lyrics';
 import type { Cue, LyricRow } from '../lyrics';
 import { parseLrc } from '../lrclib';
 
@@ -27,7 +27,7 @@ export default function LyricsPlayer({ config, onDuration }: { config: MusicPlay
   const [time, setTime] = useState(0); const [duration, setDuration] = useState(0); const [playing, setPlaying] = useState(false);
   const [volume, setVolume] = useState(100); const [muted, setMuted] = useState(false);
   const [highlight, setHighlight] = useState<{top: number; height: number} | null>(null);
-  const [expanded, setExpanded] = useState(false); const [following, setFollowing] = useState(true);
+  const [expanded, setExpanded] = useState(true); const [following, setFollowing] = useState(true);
   const [scrubbing, setScrubbing] = useState(false); const [scrubTime, setScrubTime] = useState(0);
   const [scriptMessage, setScriptMessage] = useState(false);
   const [offsetMs, setOffsetMs] = useState(0);
@@ -40,7 +40,9 @@ export default function LyricsPlayer({ config, onDuration }: { config: MusicPlay
     const read = async (path: string): Promise<Cue[]> => {
       const result = await fetch(`${base}${path}`, { signal: controller.signal });
       if (!result.ok) throw Error('subtitle unavailable');
-      return parseSrt(await result.text());
+      const cues = parseLrc(await result.text());
+      if (!cues.length) throw Error('no timed lyrics');
+      return cues;
     };
     Promise.allSettled([read(subtitles['pt-br']), read(subtitles.en)]).then(results => {
       if (controller.signal.aborted) return;

@@ -8,10 +8,12 @@ tags: ["Samba", "Lyrics"]
 artist: "Nelson Cavaquinho"
 originalLanguage: "pt-BR"
 player:
-  youtubeId: "lU8j7lj4RdU"
+  youtubeUrl: "https://www.youtube.com/watch?v=lU8j7lj4RdU"
   subtitles:
-    en: "lyrics/demo/en.srt"
-    pt-br: "lyrics/demo/pt-br.srt"
+    en: "lyrics/demo/en.lrc"
+    pt-br: "lyrics/demo/pt-br.lrc"
 credits: "Juízo Final — Nelson Cavaquinho and Élcio Soares. Performance: Nelson Cavaquinho."
 ---
-A demonstration of synchronized lyrics using **Juízo Final**, performed by Nelson Cavaquinho. Follow the Portuguese lyrics alongside their English translation, or expand the full text while listening.
+A demonstration of synchronized lyrics using **Juízo Final**, performed by Nelson Cavaquinho. Follow the Portuguese lyrics alongside their English translation, or switch to three visible lines while listening.
+
+<!-- lyrics-player -->

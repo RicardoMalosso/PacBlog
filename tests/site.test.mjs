@@ -125,7 +125,7 @@ test('music demo config links published subtitle files and localized post', () =
     assert.equal(entry.player.youtubeId, 'lU8j7lj4RdU');
     for (const file of Object.values(entry.player.subtitles)) assert(fs.existsSync(path.join('dist', file)));
     const html = fs.readFileSync(outputFor(`/${entry.locale}/music/${entry.slug}/`), 'utf8');
-    assert(html.includes(entry.locale === 'en' ? 'Show full lyrics' : 'Mostrar letra completa'));
+    assert(html.includes(entry.locale === 'en' ? 'Show three lines' : 'Mostrar três versos'));
   }
 });
 
@@ -141,4 +141,17 @@ test('YouTube URLs, LRC timing and duration-ranked matches', async () => {
   const tracks = [{id:1,duration:200,syncedLyrics:'a'}, {id:2,duration:182,syncedLyrics:'b'}, {id:3,duration:180,syncedLyrics:null}];
   assert.deepEqual(rankedTracks(tracks,180).map(x=>x.id),[2,1,3]);
   assert.deepEqual(rankedTracks(tracks,0).map(x=>x.id),[1,2,3]);
+});
+
+test('lyrics template is accepted in blog posts and normalizes YouTube URLs', () => {
+  const temp = fs.mkdtempSync('/tmp/pacblog-template-');
+  try {
+    fs.mkdirSync(path.join(temp, 'blog')); fs.mkdirSync(path.join(temp, 'music'));
+    fs.writeFileSync(path.join(temp, 'blog/song.md'), fs.readFileSync('content/music/lyric-demo.en.md'));
+    const [post] = loadContent(temp);
+    assert.equal(post.section, 'blog');
+    assert.equal(post.player.youtubeId, 'lU8j7lj4RdU');
+    assert(post.body.includes('<!-- lyrics-player -->'));
+    assert(post.player.subtitles.en.endsWith('.lrc'));
+  } finally { fs.rmSync(temp, {recursive:true}); }
 });

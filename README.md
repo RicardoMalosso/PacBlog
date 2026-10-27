@@ -73,23 +73,31 @@ Create the other language’s file with the **same section and slug**, and `loca
 
 The language switch preserves the article when its translation exists. Otherwise, it links to the other language’s section with an explanatory notice. The initial language is chosen from a saved preference, then the browser language; explicit language URLs always win. Without JavaScript, the root page provides links to both languages and all prerendered content remains readable.
 
-## Music posts and synchronized lyrics
+## Reusable lyrics player for music and blog posts
 
-Music posts are Markdown files in `content/music/`, one per language. Write the article body normally; the player appears after it. To add a synchronized player, include this frontmatter in both localized posts:
+Copy `templates/lyrics-post.md` as a starting point, or add a `player` block to any Markdown post in `content/music/` or `content/blog/`:
 
 ```yaml
 player:
-  youtubeId: "lU8j7lj4RdU"
+  youtubeUrl: "https://www.youtube.com/watch?v=lU8j7lj4RdU"
   subtitles:
-    en: "lyrics/demo/en.srt"
-    pt-br: "lyrics/demo/pt-br.srt"
+    en: "lyrics/demo/en.lrc"
+    pt-br: "lyrics/demo/pt-br.lrc"
 ```
 
-Place UTF-8 SRT files under `public/lyrics/`; their timestamps refer to the linked YouTube video's timeline. Use paths relative to `public/` (no leading slash). Both files are fetched and parsed in the browser; no backend is required. A valid 11-character YouTube ID and two existing SRT paths are checked at build time. Cue pairs are matched by their greatest overlapping time, one-to-one; unmatched cues are shown with a blank translation. Keep translations segmented similarly for best alignment. SRT cues support multiline text, CRLF and comma or dot millisecond separators. End times must be after start times. The last line remains highlighted during gaps until the next line begins; seeking before the first cue clears the highlight.
+Put the two UTF-8 LRC files under `public/lyrics/`. Paths are relative to `public/`, without a leading slash. The URL and file paths are checked during the build; lyrics are loaded and paired by timestamp in the browser. Use matching timestamps in both translations for best results. The supplied Juízo Final files demonstrate this format.
 
-Playback scrolls to the lyrics; the video stays at the right of the playback controls. Visitors can adjust volume and shift both subtitles in 100 ms increments using the timing buttons, switch between three-line and full lyrics, click a line to seek, and use Space/K to play or pause, arrows/H for five-second jumps, and J/L for ten-second jumps while focused on the page. Inputs and the seek slider retain their native keyboard controls; the embedded YouTube player receives its own keys. The YouTube embed must remain at least 200 × 200 pixels. Provide a public embeddable video and publish only lyrics you are entitled to use. The included demonstration uses Juízo Final, the supplied YouTube video, and the supplied Portuguese and English subtitles.
+The player appears after the article by default. To place it between paragraphs, put this marker on its own line in the Markdown body:
 
-Existing posts with `lyrics` frontmatter still render as static lyric pages. Credits and article copy remain localized independently of the bilingual SRT text.
+```markdown
+An introduction to the song.
+
+<!-- lyrics-player -->
+
+More notes after the player.
+```
+
+Use at most one marker per post. Both music posts and ordinary blog posts support it. Each localized post supplies its own frontmatter, but can reference the same two LRC files. Full lyrics are shown by default; visitors can switch to three visible lines at any time. Volume, keyboard shortcuts, timing adjustment and the moving highlight work in either mode. No backend is required.
 
 ## Portfolio and contact
 
