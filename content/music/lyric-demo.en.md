@@ -17,3 +17,7 @@ credits: "Juízo Final — Nelson Cavaquinho and Élcio Soares. Performance: Nel
 A demonstration of synchronized lyrics using **Juízo Final**, performed by Nelson Cavaquinho. Follow the Portuguese lyrics alongside their English translation, or switch to three visible lines while listening.
 
 <!-- lyrics-player -->
+
+:::panel About the translation
+The Portuguese lyrics appear alongside an [English translation](#note "The translation follows the same timestamps as the original Portuguese lyrics.").
+:::

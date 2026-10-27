@@ -17,3 +17,7 @@ credits: "Juízo Final — Nelson Cavaquinho e Élcio Soares. Interpretação: N
 Uma demonstração de letras sincronizadas com **Juízo Final**, na voz de Nelson Cavaquinho. Acompanhe a letra em português ao lado da tradução em inglês ou escolha três versos visíveis enquanto ouve.
 
 <!-- lyrics-player -->
+
+:::panel Sobre a tradução
+A letra em português aparece ao lado de uma [tradução em inglês](#note "A tradução segue os mesmos tempos da letra original em português.").
+:::

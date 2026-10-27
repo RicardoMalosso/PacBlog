@@ -112,3 +112,23 @@ The localized résumé pages use Markdown in `src/resumes/` and downloads in `pu
 ### LRCLIB lyrics experiment
 
 The Experiments page lets visitors enter a song search and YouTube URL. It queries LRCLIB directly in the browser and ranks timed-lyrics results by their duration's distance from the embedded video, when YouTube exposes that duration. Visitors can choose another result and adjust lyric timing. Search results and lyrics are not saved or exported; the experiment is an interactive YouTube player, not an MP4 renderer. Some videos cannot be embedded, some songs lack timed lyrics, and LRCLIB or YouTube may be unavailable.
+
+## Markdown panels and hover notes
+
+Blog and music articles support normal Markdown plus expandable sections:
+
+```markdown
+:::panel More about this song
+Write **Markdown**, lists, images and links inside this section.
+:::
+```
+
+Sections start open, can collapse, and can expand into a larger reading dialog. Escape closes the dialog. Use one panel level (no nested panels). Keep the lyrics-player marker outside a panel.
+
+For a text note that fades in on hover, keyboard focus or tap:
+
+```markdown
+This is a [word with context](#note "This explanation appears in a floating text box.").
+```
+
+Note text is plain text. Everything works on GitHub Pages without a backend.

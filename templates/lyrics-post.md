@@ -19,3 +19,9 @@ Write your introduction here. Copy this file into content/blog/ or content/music
 <!-- lyrics-player -->
 
 Write any further notes here.
+
+:::panel Additional reading
+Add **Markdown** here. This section can collapse or expand.
+:::
+
+Add a [hover note](#note "A short explanation for this phrase.") to any paragraph.
