@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { base } from '../data';
-import { selectedRow, alignLyrics, formatTime, nearbyRow, parseSrt } from '../lyrics';
+import { selectedRow, alignLyrics, formatTime, nearbyRow, parseSrt, lyricTime, videoTimeForLyric } from '../lyrics';
 import type { Cue, LyricRow } from '../lyrics';
 
 type Player = { getCurrentTime(): number; getDuration(): number; getPlayerState(): number; playVideo(): void; pauseVideo(): void; seekTo(seconds: number, allowSeekAhead: boolean): void; setVolume(value: number): void; getVolume(): number; mute(): void; unMute(): void; isMuted(): boolean; destroy(): void };
@@ -29,6 +29,7 @@ export default function LyricsPlayer({ config }: { config: MusicPlayerConfig }) 
   const [expanded, setExpanded] = useState(false); const [following, setFollowing] = useState(true);
   const [scrubbing, setScrubbing] = useState(false); const [scrubTime, setScrubTime] = useState(0);
   const [scriptMessage, setScriptMessage] = useState(false);
+  const [offsetMs, setOffsetMs] = useState(0);
 
   useEffect(() => {
     const controller = new AbortController(); setRows([]); setLoadError('');
@@ -77,8 +78,9 @@ export default function LyricsPlayer({ config }: { config: MusicPlayerConfig }) 
     return () => window.clearInterval(timer);
   }, [ready]);
   const shownTime = scrubbing ? scrubTime : time;
-  const current = useMemo(() => selectedRow(rows, shownTime), [rows, shownTime]);
-  const center = useMemo(() => nearbyRow(rows, shownTime), [rows, shownTime]);
+  const adjustedTime = lyricTime(shownTime, offsetMs);
+  const current = useMemo(() => selectedRow(rows, adjustedTime), [rows, adjustedTime]);
+  const center = useMemo(() => nearbyRow(rows, adjustedTime), [rows, adjustedTime]);
   const displayed = expanded ? rows.map((row, index) => ({row, index})) : rows.map((row, index) => ({row, index})).filter(({index}) => index >= center - 1 && index <= center + 1);
   const seek = (seconds: number) => { const p = player.current; if (!p || !ready) return; const next = Math.max(0, Math.min(duration || Number.MAX_SAFE_INTEGER, seconds)); p.seekTo(next, true); setTime(next); };
   const toggle = () => { const p = player.current; if (!p || !ready) return; if (p.getPlayerState() === 1) p.pauseVideo(); else p.playVideo(); };
@@ -126,8 +128,15 @@ export default function LyricsPlayer({ config }: { config: MusicPlayerConfig }) 
     <div ref={lyricsHeader} className="lyric-controls"><div className="lyric-column-headings"><span>{t('timestamp')}</span><span>🇨🇦 English</span><span>🇧🇷 Português</span></div>{expanded && !following && <button onClick={() => setFollowing(true)}>{t('followLine')}</button>}</div>
     {loadError && <p className="notice" role="status">{t(loadError)}</p>}
     <div ref={lyricsRef} className={`synced-lyrics ${expanded ? 'is-expanded' : 'is-compact'}`} onWheel={stopFollowing} onTouchMove={stopFollowing} onKeyDown={e => {if (['PageUp','PageDown','Home','End'].includes(e.key)) stopFollowing();}} tabIndex={expanded ? 0 : undefined} aria-label={t('lyricsPlayer')}>
-      <span aria-hidden="true" className="lyric-highlight" style={highlight ? { transform: `translateY(${highlight.top}px)`, height: highlight.height, opacity: 1 } : { opacity: 0 }}/>{displayed.map(({row, index}) => <button type="button" className={`sync-row ${current === index ? 'is-current' : ''}`} data-current={current === index} key={`${row.start}-${index}`} onClick={() => {seek(row.start);setFollowing(true);}} aria-label={`${formatTime(row.start)} ${row.en?.text || ''} ${row.pt?.text || ''}`}><span className="sync-time mono">{formatTime(row.start)}</span><span className="sync-en" lang="en">{row.en?.text || ''}</span><span className="sync-pt" lang="pt-BR">{row.pt?.text || ''}</span></button>)}
+      <span aria-hidden="true" className="lyric-highlight" style={highlight ? { transform: `translateY(${highlight.top}px)`, height: highlight.height, opacity: 1 } : { opacity: 0 }}/>{displayed.map(({row, index}) => <button type="button" className={`sync-row ${current === index ? 'is-current' : ''}`} data-current={current === index} key={`${row.start}-${index}`} onClick={() => {seek(videoTimeForLyric(row.start, offsetMs));setFollowing(true);}} aria-label={`${formatTime(videoTimeForLyric(row.start, offsetMs))} ${row.en?.text || ''} ${row.pt?.text || ''}`}><span className="sync-time mono">{formatTime(videoTimeForLyric(row.start, offsetMs))}</span><span className="sync-en" lang="en">{row.en?.text || ''}</span><span className="sync-pt" lang="pt-BR">{row.pt?.text || ''}</span></button>)}
       {!rows.length && !loadError && <p className="player-status">{t('loadingLyrics')}</p>}
+    </div>
+    <div className="lyrics-sync" role="group" aria-label={t('syncPrompt')}>
+      <span>{t('syncPrompt')}</span>
+      <button type="button" onClick={() => setOffsetMs(value => value + 100)}>{t('lyricsEarly')}</button>
+      <button type="button" onClick={() => setOffsetMs(value => value - 100)}>{t('lyricsLate')}</button>
+      <output className="mono" aria-label={t('syncOffset')} aria-live="polite">{offsetMs > 0 ? '+' : ''}{offsetMs} ms</output>
+      {offsetMs !== 0 && <button type="button" onClick={() => setOffsetMs(0)}>{t('syncReset')}</button>}
     </div>
     <p className="player-caption">{t('keyboardHelp')} <button className="inline-button" onClick={() => setScriptMessage(x => !x)} aria-expanded={scriptMessage}>{t('keyboardDetails')}</button></p>
     {scriptMessage && <p className="player-caption">{t('keyboardExplanation')}</p>}

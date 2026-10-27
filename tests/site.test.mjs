@@ -97,7 +97,7 @@ test('résumé routes include localized content and both downloadable PDFs', () 
 });
 
 test('SRT parsing, bilingual alignment and playback gaps', async () => {
-  const { parseSrt, alignLyrics, activeRow, selectedRow, nearbyRow, formatTime } = await import('../.ssr/entry-server.js');
+  const { parseSrt, alignLyrics, activeRow, selectedRow, nearbyRow, formatTime, lyricTime, videoTimeForLyric } = await import('../.ssr/entry-server.js');
   const pt = parseSrt('\uFEFF1\r\n00:00:01,000 --> 00:00:03,000\r\nPrimeira linha\r\nsegunda linha\r\n\r\n2\r\n00:00:05,000 --> 00:00:06,000\r\nOutra');
   const en = parseSrt('1\n00:00:01.200 --> 00:00:02.800\nFirst line\n\n2\n00:00:07,000 --> 00:00:08,000\nUnmatched');
   assert.equal(pt[0].text, 'Primeira linha\nsegunda linha');
@@ -111,6 +111,10 @@ test('SRT parsing, bilingual alignment and playback gaps', async () => {
   assert.equal(activeRow(rows, 5.5), 1); assert.equal(activeRow(rows, 7.5), 2);
   assert.equal(nearbyRow(rows, 4), 0); assert.equal(nearbyRow(rows, 20), 2);
   assert.equal(formatTime(3661), '1:01:01');
+  assert.equal(selectedRow(rows, lyricTime(1.05, 100)), -1);
+  assert.equal(selectedRow(rows, lyricTime(0.95, -100)), 0);
+  assert.equal(videoTimeForLyric(1, 100), 1.1);
+  assert.equal(videoTimeForLyric(0.05, -100), 0);
   assert.throws(() => parseSrt('1\n00:00:03,000 --> 00:00:01,000\nbroken'), /Invalid SRT cue/);
 });
 

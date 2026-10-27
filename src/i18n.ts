@@ -2,6 +2,7 @@ import { createInstance } from 'i18next';
 import type { Locale } from './types';
 export const locales: Locale[] = ['pt-br', 'en'];
 const en = {
+  syncPrompt: 'Lyrics out of sync?', lyricsEarly: 'Lyrics are early', lyricsLate: 'Lyrics are late', syncReset: 'Reset', syncOffset: 'Lyrics timing adjustment',
   volume: 'Volume', mute: 'Mute', unmute: 'Unmute',
   lyricsPlayer: 'Listen & read', listenRead: 'LYRICS / PLAYER', smallerVideo: 'Smaller video', largerVideo: 'Expand video', expandLyrics: 'Show full lyrics', compactLyrics: 'Show three lines', followLine: 'Follow current line', timestamp: 'Time', lyricsLoadError: 'Some lyrics could not be loaded. Check the subtitle files.', loadingLyrics: 'Loading lyrics…', loadingPlayer: 'Loading YouTube player…', videoError: 'The video could not be played here.', watchOnYoutube: 'Watch on YouTube', videoPlayback: 'YouTube playback', playAudio: 'Play video', pauseAudio: 'Pause video', seek: 'Playback position', keyboardHelp: 'Space / K: play or pause · ← / → / H: seek 5s · J / L: seek 10s', keyboardDetails: 'Keyboard details', keyboardExplanation: 'Shortcuts work while focus is on this page. Text fields and the seek slider keep their normal keyboard controls; the embedded YouTube player handles its own keys.',
 
@@ -34,6 +35,7 @@ const en = {
   fallback: 'This page is not available in the other language yet. Here are the available entries.',
 };
 const pt: typeof en = {
+  syncPrompt: 'Letra fora de sincronia?', lyricsEarly: 'Letra adiantada', lyricsLate: 'Letra atrasada', syncReset: 'Restaurar', syncOffset: 'Ajuste de tempo da letra',
   volume: 'Volume', mute: 'Silenciar', unmute: 'Ativar som',
   lyricsPlayer: 'Ouvir e ler', listenRead: 'LETRA / PLAYER', smallerVideo: 'Reduzir vídeo', largerVideo: 'Ampliar vídeo', expandLyrics: 'Mostrar letra completa', compactLyrics: 'Mostrar três versos', followLine: 'Acompanhar verso atual', timestamp: 'Tempo', lyricsLoadError: 'Não foi possível carregar todas as letras. Verifique os arquivos de legenda.', loadingLyrics: 'Carregando letras…', loadingPlayer: 'Carregando player do YouTube…', videoError: 'Não foi possível reproduzir o vídeo aqui.', watchOnYoutube: 'Assistir no YouTube', videoPlayback: 'Reprodução do YouTube', playAudio: 'Reproduzir vídeo', pauseAudio: 'Pausar vídeo', seek: 'Posição da reprodução', keyboardHelp: 'Espaço / K: reproduzir ou pausar · ← / → / H: avançar ou voltar 5s · J / L: voltar ou avançar 10s', keyboardDetails: 'Detalhes dos atalhos', keyboardExplanation: 'Os atalhos funcionam com o foco nesta página. Campos de texto e o controle de posição mantêm seus atalhos normais; o player do YouTube tem seus próprios comandos.',
 
