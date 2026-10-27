@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { base } from '../data';
 import { selectedRow, alignLyrics, formatTime, nearbyRow, parseSrt, lyricTime, videoTimeForLyric } from '../lyrics';
 import type { Cue, LyricRow } from '../lyrics';
+import { parseLrc } from '../lrclib';
 
 type Player = { getCurrentTime(): number; getDuration(): number; getPlayerState(): number; playVideo(): void; pauseVideo(): void; seekTo(seconds: number, allowSeekAhead: boolean): void; setVolume(value: number): void; getVolume(): number; mute(): void; unMute(): void; isMuted(): boolean; destroy(): void };
 type YTNamespace = { Player: new (element: HTMLElement, options: object) => Player };
@@ -17,8 +18,8 @@ function youtubeApi(): Promise<YTNamespace> {
   }).catch(error => { apiPromise = undefined; throw error; });
   return apiPromise!;
 }
-export type MusicPlayerConfig = { youtubeId: string; subtitles: { en: string; 'pt-br': string } };
-export default function LyricsPlayer({ config }: { config: MusicPlayerConfig }) {
+export type MusicPlayerConfig = { youtubeId: string; subtitles?: { en: string; 'pt-br': string }; lrc?: string; lyricLabel?: string };
+export default function LyricsPlayer({ config, onDuration }: { config: MusicPlayerConfig; onDuration?: (duration: number) => void }) {
   const { t } = useTranslation();
   const mount = useRef<HTMLDivElement>(null); const player = useRef<Player | null>(null); const lyricsRef = useRef<HTMLDivElement>(null); const lyricsHeader = useRef<HTMLDivElement>(null); const started = useRef(false); const volumeLockUntil = useRef(0);
   const [rows, setRows] = useState<LyricRow[]>([]); const [loadError, setLoadError] = useState('');
@@ -33,12 +34,15 @@ export default function LyricsPlayer({ config }: { config: MusicPlayerConfig }) 
 
   useEffect(() => {
     const controller = new AbortController(); setRows([]); setLoadError('');
+    if (config.lrc !== undefined) { setRows(parseLrc(config.lrc).map(cue => ({ start: cue.start, end: cue.end, pt: cue }))); return () => controller.abort(); }
+    if (!config.subtitles) return () => controller.abort();
+    const subtitles = config.subtitles;
     const read = async (path: string): Promise<Cue[]> => {
       const result = await fetch(`${base}${path}`, { signal: controller.signal });
       if (!result.ok) throw Error('subtitle unavailable');
       return parseSrt(await result.text());
     };
-    Promise.allSettled([read(config.subtitles['pt-br']), read(config.subtitles.en)]).then(results => {
+    Promise.allSettled([read(subtitles['pt-br']), read(subtitles.en)]).then(results => {
       if (controller.signal.aborted) return;
       const pt = results[0].status === 'fulfilled' ? results[0].value : [];
       const en = results[1].status === 'fulfilled' ? results[1].value : [];
@@ -46,7 +50,7 @@ export default function LyricsPlayer({ config }: { config: MusicPlayerConfig }) 
       if (results.some(r => r.status === 'rejected') || !pt.length || !en.length) setLoadError('lyricsLoadError');
     });
     return () => controller.abort();
-  }, [config.subtitles.en, config.subtitles['pt-br']]);
+  }, [config.subtitles?.en, config.subtitles?.['pt-br'], config.lrc]);
 
   useEffect(() => {
     let cancelled = false; let instance: Player | null = null; setPlayerError(false); setReady(false);
@@ -73,10 +77,10 @@ export default function LyricsPlayer({ config }: { config: MusicPlayerConfig }) 
   useEffect(() => {
     const timer = window.setInterval(() => {
       const p = player.current; if (!p || !ready) return;
-      try { const current = p.getCurrentTime(); const length = p.getDuration(); if (Number.isFinite(current)) setTime(current); if (Number.isFinite(length)) setDuration(length); if (Date.now() >= volumeLockUntil.current) { const v = p.getVolume(); if (Number.isFinite(v)) setVolume(v); setMuted(p.isMuted()); } } catch { /* player is loading */ }
+      try { const current = p.getCurrentTime(); const length = p.getDuration(); if (Number.isFinite(current)) setTime(current); if (Number.isFinite(length)) { setDuration(length); if (length > 0) onDuration?.(length); } if (Date.now() >= volumeLockUntil.current) { const v = p.getVolume(); if (Number.isFinite(v)) setVolume(v); setMuted(p.isMuted()); } } catch { /* player is loading */ }
     }, 150);
     return () => window.clearInterval(timer);
-  }, [ready]);
+  }, [ready, onDuration]);
   const shownTime = scrubbing ? scrubTime : time;
   const adjustedTime = lyricTime(shownTime, offsetMs);
   const current = useMemo(() => selectedRow(rows, adjustedTime), [rows, adjustedTime]);
@@ -125,11 +129,11 @@ export default function LyricsPlayer({ config }: { config: MusicPlayerConfig }) 
       <div className="youtube-shell"><div ref={mount} className="youtube-mount"/><noscript><a href={`https://www.youtube.com/watch?v=${config.youtubeId}`}>{t('watchOnYoutube')} ↗</a></noscript>{playerError && <p className="player-error">{t('videoError')} <a href={`https://www.youtube.com/watch?v=${config.youtubeId}`}>{t('watchOnYoutube')} ↗</a></p>}</div>
       <div className="music-controls"><div className="control-top"><button className="play-control" onClick={toggle} disabled={!ready || playerError} aria-label={t(playing ? 'pauseAudio' : 'playAudio')}>{playing ? 'Ⅱ' : '▶'}</button><div><strong>{t('videoPlayback')}</strong><p>{t('keyboardHelp')}</p></div></div><label className="sr-only" htmlFor="music-seek">{t('seek')}</label><input id="music-seek" className="music-seek" type="range" min={0} max={duration || 0} step="0.1" disabled={!ready || !duration} value={Math.min(shownTime, duration || 0)} onPointerDown={() => {setScrubTime(time);setScrubbing(true);}} onChange={e => { const value = Number(e.target.value); setScrubTime(value); if (!scrubbing) seek(value); }} onPointerUp={e => { seek(Number(e.currentTarget.value));setScrubbing(false); }} onPointerCancel={() => setScrubbing(false)}/><div className="player-times mono"><span>{formatTime(shownTime)}</span><span>{formatTime(duration)}</span></div><div className="volume-controls"><button type="button" className="volume-mute" onClick={toggleMute} disabled={!ready || playerError} aria-label={t(muted || volume === 0 ? 'unmute' : 'mute')} aria-pressed={muted || volume === 0}>{muted || volume === 0 ? '🔇' : '🔊'}</button><label htmlFor="music-volume">{t('volume')}</label><input id="music-volume" type="range" min={0} max={100} step={1} value={muted ? 0 : volume} disabled={!ready || playerError} onChange={e => changeVolume(Number(e.target.value))}/><span className="mono">{muted ? 0 : volume}%</span></div>{!ready && !playerError && <p className="player-status">{t('loadingPlayer')}</p>}</div>
     </div>
-    <div ref={lyricsHeader} className="lyric-controls"><div className="lyric-column-headings"><span>{t('timestamp')}</span><span>🇨🇦 English</span><span>🇧🇷 Português</span></div>{expanded && !following && <button onClick={() => setFollowing(true)}>{t('followLine')}</button>}</div>
+    <div ref={lyricsHeader} className="lyric-controls"><div className="lyric-column-headings"><span>{t('timestamp')}</span>{config.lrc !== undefined ? <><span></span><span>{config.lyricLabel || t('lyricsPlayer')}</span></> : <><span>🇨🇦 English</span><span>🇧🇷 Português</span></>}</div>{expanded && !following && <button onClick={() => setFollowing(true)}>{t('followLine')}</button>}</div>
     {loadError && <p className="notice" role="status">{t(loadError)}</p>}
     <div ref={lyricsRef} className={`synced-lyrics ${expanded ? 'is-expanded' : 'is-compact'}`} onWheel={stopFollowing} onTouchMove={stopFollowing} onKeyDown={e => {if (['PageUp','PageDown','Home','End'].includes(e.key)) stopFollowing();}} tabIndex={expanded ? 0 : undefined} aria-label={t('lyricsPlayer')}>
-      <span aria-hidden="true" className="lyric-highlight" style={highlight ? { transform: `translateY(${highlight.top}px)`, height: highlight.height, opacity: 1 } : { opacity: 0 }}/>{displayed.map(({row, index}) => <button type="button" className={`sync-row ${current === index ? 'is-current' : ''}`} data-current={current === index} key={`${row.start}-${index}`} onClick={() => {seek(videoTimeForLyric(row.start, offsetMs));setFollowing(true);}} aria-label={`${formatTime(videoTimeForLyric(row.start, offsetMs))} ${row.en?.text || ''} ${row.pt?.text || ''}`}><span className="sync-time mono">{formatTime(videoTimeForLyric(row.start, offsetMs))}</span><span className="sync-en" lang="en">{row.en?.text || ''}</span><span className="sync-pt" lang="pt-BR">{row.pt?.text || ''}</span></button>)}
-      {!rows.length && !loadError && <p className="player-status">{t('loadingLyrics')}</p>}
+      <span aria-hidden="true" className="lyric-highlight" style={highlight ? { transform: `translateY(${highlight.top}px)`, height: highlight.height, opacity: 1 } : { opacity: 0 }}/>{displayed.map(({row, index}) => <button type="button" className={`sync-row ${current === index ? 'is-current' : ''}`} data-current={current === index} key={`${row.start}-${index}`} onClick={() => {seek(videoTimeForLyric(row.start, offsetMs));setFollowing(true);}} aria-label={`${formatTime(videoTimeForLyric(row.start, offsetMs))} ${row.en?.text || ''} ${row.pt?.text || ''}`}><span className="sync-time mono">{formatTime(videoTimeForLyric(row.start, offsetMs))}</span><span className="sync-en" lang="en">{row.en?.text || ''}</span><span className="sync-pt" lang={config.lrc !== undefined ? undefined : "pt-BR"}>{row.pt?.text || ''}</span></button>)}
+      {!rows.length && !loadError && <p className="player-status">{t(config.lrc !== undefined ? 'chooseSyncedLyrics' : 'loadingLyrics')}</p>}
     </div>
     <div className="lyrics-sync" role="group" aria-label={t('syncPrompt')}>
       <span>{t('syncPrompt')}</span>

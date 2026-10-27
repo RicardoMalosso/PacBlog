@@ -128,3 +128,17 @@ test('music demo config links published subtitle files and localized post', () =
     assert(html.includes(entry.locale === 'en' ? 'Show full lyrics' : 'Mostrar letra completa'));
   }
 });
+
+test('YouTube URLs, LRC timing and duration-ranked matches', async () => {
+  const { youtubeId, parseLrc, rankedTracks } = await import('../.ssr/entry-server.js');
+  assert.equal(youtubeId('https://www.youtube.com/watch?v=lU8j7lj4RdU&t=5'), 'lU8j7lj4RdU');
+  assert.equal(youtubeId('https://youtu.be/lU8j7lj4RdU'), 'lU8j7lj4RdU');
+  assert.equal(youtubeId('https://youtube.com/shorts/lU8j7lj4RdU'), 'lU8j7lj4RdU');
+  assert.equal(youtubeId('https://youtube.com.evil.test/watch?v=lU8j7lj4RdU'), null);
+  const cues = parseLrc('[ar:Artist]\n[00:01.10]First\n[00:04.20][00:08.00]Repeated\n[00:09.50]');
+  assert.deepEqual(cues.map(x=>x.start), [1.1,4.2,8]);
+  assert.equal(cues[0].end,4.2); assert.equal(cues[2].text,'Repeated');
+  const tracks = [{id:1,duration:200,syncedLyrics:'a'}, {id:2,duration:182,syncedLyrics:'b'}, {id:3,duration:180,syncedLyrics:null}];
+  assert.deepEqual(rankedTracks(tracks,180).map(x=>x.id),[2,1,3]);
+  assert.deepEqual(rankedTracks(tracks,0).map(x=>x.id),[1,2,3]);
+});

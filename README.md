@@ -100,3 +100,7 @@ Contact links are in `Contact` in `src/App.tsx`. Email uses `mailto:`; it does n
 ### Résumé PDFs
 
 The localized résumé pages use Markdown in `src/resumes/` and downloads in `public/resumes/`. After replacing either PDF, run `python3 scripts/link-resume-pdfs.py` (requires PyMuPDF) to add a clickable portfolio link to every page. The script is safe to run repeatedly. Keep the portfolio contact link in both Markdown sources when updating the résumé.
+
+### LRCLIB lyrics experiment
+
+The Experiments page lets visitors enter a song search and YouTube URL. It queries LRCLIB directly in the browser and ranks timed-lyrics results by their duration's distance from the embedded video, when YouTube exposes that duration. Visitors can choose another result and adjust lyric timing. Search results and lyrics are not saved or exported; the experiment is an interactive YouTube player, not an MP4 renderer. Some videos cannot be embedded, some songs lack timed lyrics, and LRCLIB or YouTube may be unavailable.
