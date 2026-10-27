@@ -60,7 +60,7 @@ test('static 404, sitemap and publishing artifacts exist', () => {
   assert(fs.readFileSync('dist/404.html', 'utf8').includes('noindex'));
   assert(fs.readFileSync('dist/sitemap.xml', 'utf8').includes(`${base}en/blog/welcome/`));
   assert(fs.existsSync('dist/.nojekyll'));
-  assert(fs.readFileSync('dist/pt-br/music/lyric-page-demo/index.html', 'utf8').includes('Uma janela'));
+  assert(fs.readFileSync('dist/pt-br/music/lyric-page-demo/index.html', 'utf8').includes('Juízo Final'));
 });
 
 test('shared interface copy stays localized across every published page', () => {
@@ -115,7 +115,7 @@ test('music demo config links published subtitle files and localized post', () =
   const entries = loadContent().filter(x => x.slug === 'lyric-page-demo');
   assert.equal(entries.length, 2);
   for (const entry of entries) {
-    assert.equal(entry.player.youtubeId, 'M7lc1UVf-VE');
+    assert.equal(entry.player.youtubeId, 'lU8j7lj4RdU');
     for (const file of Object.values(entry.player.subtitles)) assert(fs.existsSync(path.join('dist', file)));
     const html = fs.readFileSync(outputFor(`/${entry.locale}/music/${entry.slug}/`), 'utf8');
     assert(html.includes(entry.locale === 'en' ? 'Show full lyrics' : 'Mostrar letra completa'));

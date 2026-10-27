@@ -79,7 +79,7 @@ Music posts are Markdown files in `content/music/`, one per language. Write the 
 
 ```yaml
 player:
-  youtubeId: "M7lc1UVf-VE"
+  youtubeId: "lU8j7lj4RdU"
   subtitles:
     en: "lyrics/demo/en.srt"
     pt-br: "lyrics/demo/pt-br.srt"
@@ -87,7 +87,7 @@ player:
 
 Place UTF-8 SRT files under `public/lyrics/`; their timestamps refer to the linked YouTube video's timeline. Use paths relative to `public/` (no leading slash). Both files are fetched and parsed in the browser; no backend is required. A valid 11-character YouTube ID and two existing SRT paths are checked at build time. Cue pairs are matched by their greatest overlapping time, one-to-one; unmatched cues are shown with a blank translation. Keep translations segmented similarly for best alignment. SRT cues support multiline text, CRLF and comma or dot millisecond separators. End times must be after start times. Instrumental gaps do not highlight a line.
 
-Visitors can switch between three-line and full lyrics, click a line to seek, and use Space/K to play or pause, arrows/H for five-second jumps, and J/L for ten-second jumps while focused on the page. Inputs and the seek slider retain their native keyboard controls; the embedded YouTube player receives its own keys. The YouTube embed must remain at least 200 × 200 pixels. Provide a public embeddable video and publish only lyrics you are entitled to use. The included demo uses original sample lines and an unrelated YouTube API demonstration video; its timing illustrates the feature rather than transcribing that video.
+Visitors can switch between three-line and full lyrics, click a line to seek, and use Space/K to play or pause, arrows/H for five-second jumps, and J/L for ten-second jumps while focused on the page. Inputs and the seek slider retain their native keyboard controls; the embedded YouTube player receives its own keys. The YouTube embed must remain at least 200 × 200 pixels. Provide a public embeddable video and publish only lyrics you are entitled to use. The included demonstration uses Juízo Final, the supplied YouTube video, and the supplied Portuguese and English subtitles.
 
 Existing posts with `lyrics` frontmatter still render as static lyric pages. Credits and article copy remain localized independently of the bilingual SRT text.
 

@@ -1,15 +1,83 @@
 1
-00:00:04,000 --> 00:00:07,900
-Uma janela, um pedaço de céu
+00:00:08,340 --> 00:00:11,010
+O Sol
 
 2
-00:00:08,000 --> 00:00:15,900
-Guardo as palavras num barco de papel
+00:00:12,860 --> 00:00:16,340
+Há de brilhar mais uma vez
 
 3
-00:00:16,000 --> 00:00:21,900
-E deixo a tarde levar
+00:00:17,100 --> 00:00:19,550
+A luz
 
 4
-00:00:24,000 --> 00:00:30,000
-O vento leva a canção
+00:00:19,950 --> 00:00:25,430
+Há de chegar aos corações
+
+5
+00:00:27,880 --> 00:00:34,790
+O mal será queimada a semente
+
+6
+00:00:34,960 --> 00:00:44,350
+O amor será eterno novamente
+
+7
+00:00:45,490 --> 00:00:49,720
+É o juízo final
+
+8
+00:00:49,720 --> 00:00:56,470
+A história do bem e do mal
+
+9
+00:00:59,150 --> 00:01:01,880
+Quero ter olhos pra ver
+
+10
+00:01:01,880 --> 00:01:06,820
+A maldade desaparecer
+
+11
+00:01:46,740 --> 00:01:50,600
+É o juízo final
+
+12
+00:01:50,600 --> 00:01:57,250
+A história do bem e do mal
+
+13
+00:01:59,630 --> 00:02:03,110
+Quero ter olhos pra ver
+
+14
+00:02:03,900 --> 00:02:09,460
+A maldade desaparecer
+
+15
+00:02:09,460 --> 00:02:13,060
+O Sol
+
+16
+00:02:13,060 --> 00:02:18,980
+Há de brilhar mais uma vez
+
+17
+00:02:18,980 --> 00:02:21,780
+A luz
+
+18
+00:02:21,830 --> 00:02:28,520
+Há de chegar aos corações
+
+19
+00:02:28,520 --> 00:02:37,180
+O mal será queimada a semente
+
+20
+00:02:37,180 --> 00:02:45,490
+O amor será eterno novamente
+
+21
+00:03:03,660 --> 00:03:08,170
+O amor será eterno...

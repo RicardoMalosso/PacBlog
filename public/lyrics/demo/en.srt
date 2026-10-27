@@ -1,15 +1,83 @@
 1
-00:00:04,000 --> 00:00:07,900
-A window, a little piece of sky
+00:00:08,340 --> 00:00:11,010
+The sun
 
 2
-00:00:08,000 --> 00:00:15,900
-I keep the words in a paper boat
+00:00:12,860 --> 00:00:16,340
+Will shine once again
 
 3
-00:00:16,000 --> 00:00:21,900
-And let the afternoon carry them away
+00:00:17,100 --> 00:00:19,550
+The light
 
 4
-00:00:24,000 --> 00:00:30,000
-The wind carries the song
+00:00:19,950 --> 00:00:25,430
+Will reach our hearts
+
+5
+00:00:27,880 --> 00:00:34,790
+The seed of evil will be burned
+
+6
+00:00:34,960 --> 00:00:44,350
+Love will be eternal once again
+
+7
+00:00:45,490 --> 00:00:49,720
+It is Judgment Day
+
+8
+00:00:49,720 --> 00:00:56,470
+The story of good and evil
+
+9
+00:00:59,150 --> 00:01:01,880
+I want eyes that can see
+
+10
+00:01:01,880 --> 00:01:06,820
+Evil disappear
+
+11
+00:01:46,740 --> 00:01:50,600
+It is Judgment Day
+
+12
+00:01:50,600 --> 00:01:57,250
+The story of good and evil
+
+13
+00:01:59,630 --> 00:02:03,110
+I want eyes that can see
+
+14
+00:02:03,900 --> 00:02:09,460
+Evil disappear
+
+15
+00:02:09,460 --> 00:02:13,060
+The sun
+
+16
+00:02:13,060 --> 00:02:18,980
+Will shine once again
+
+17
+00:02:18,980 --> 00:02:21,780
+The light
+
+18
+00:02:21,830 --> 00:02:28,520
+Will reach our hearts
+
+19
+00:02:28,520 --> 00:02:37,180
+The seed of evil will be burned
+
+20
+00:02:37,180 --> 00:02:45,490
+Love will be eternal once again
+
+21
+00:03:03,660 --> 00:03:08,170
+Love will be eternal...
