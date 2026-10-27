@@ -62,3 +62,16 @@ test('static 404, sitemap and publishing artifacts exist', () => {
   assert(fs.existsSync('dist/.nojekyll'));
   assert(fs.readFileSync('dist/pt-br/music/lyric-page-demo/index.html', 'utf8').includes('Uma janela'));
 });
+
+test('shared interface copy stays localized across every published page', () => {
+  const leakedEnglish = /Skip to content|Selected projects|DATA \/ VISUALIZATION|PYTHON \/ AI \/ AUDIO|Data visualization|Caching|Speech controls|Hear this project description/;
+  const leakedPortuguese = /Pular para o conteúdo|Projetos selecionados|DADOS \/ VISUALIZAÇÃO|PYTHON \/ IA \/ ÁUDIO|Visualização de dados|Controles de fala|Ouça a descrição deste projeto/;
+  for (const route of routes.filter(route => /^\/(en|pt-br)\//.test(route))) {
+    const html = fs.readFileSync(outputFor(route), 'utf8');
+    const english = route.startsWith('/en/');
+    assert(!((english ? leakedPortuguese : leakedEnglish).test(html)), `Mixed interface language at ${route}`);
+    assert(html.includes(`aria-label="Ricardo Malosso — ${english ? 'Portfolio' : 'Portfólio'}"`), route);
+  }
+  assert(fs.readFileSync(outputFor('/pt-br/experiments/'), 'utf8').includes('6,34'));
+  assert(fs.readFileSync(outputFor('/en/experiments/'), 'utf8').includes('6.34'));
+});
