@@ -4,7 +4,8 @@
 Mogi das Cruzes, São Paulo, Brazil  
 Email: ricardomalosso@gmail.com | Phone: +55 11 95143 6867  
 LinkedIn: https://www.linkedin.com/in/ricardo-rodrigues-malosso-9b4848112/  
-GitHub: https://github.com/RicardoMalosso
+GitHub: https://github.com/RicardoMalosso  
+Portfolio: [ricardomalosso.github.io/PacBlog/en/](https://ricardomalosso.github.io/PacBlog/en/)
 
 ## Professional Summary
 
