@@ -2,6 +2,7 @@ import { createInstance } from 'i18next';
 import type { Locale } from './types';
 export const locales: Locale[] = ['pt-br', 'en'];
 const en = {
+  playReplay: 'Play replay', pauseReplay: 'Pause replay', replayAlt: 'Archived vote-count replay with chart and state map', replayCaption: 'Replay of 9 archived national bulletins, updated every 3 seconds. State map: real final results, shown as a fixed reference.',
   portfolio: 'Portfolio', blog: 'Blog', music: 'Music', experiments: 'Experiments', contact: 'Contact',
   skip: 'Skip to content', menu: 'Navigation', language: 'Language', theme: 'Change color theme',
   eyebrow: 'SOFTWARE · MUSIC · CURIOSITY', hello: 'Hi, I’m Ricardo.', hero: 'I build things.\nThen I write about them.',
@@ -22,6 +23,7 @@ const en = {
   fallback: 'This page is not available in the other language yet. Here are the available entries.',
 };
 const pt: typeof en = {
+  playReplay: 'Reproduzir replay', pauseReplay: 'Pausar replay', replayAlt: 'Replay da apuração arquivada com gráfico e mapa dos estados', replayCaption: 'Replay de 9 boletins nacionais arquivados, com atualização a cada 3 segundos. Mapa estadual: resultados finais reais, como referência fixa.',
   portfolio: 'Portfólio', blog: 'Blog', music: 'Música', experiments: 'Experimentos', contact: 'Contato',
   skip: 'Pular para o conteúdo', menu: 'Navegação', language: 'Idioma', theme: 'Mudar tema de cores',
   eyebrow: 'SOFTWARE · MÚSICA · CURIOSIDADE', hello: 'Oi, eu sou o Ricardo.', hero: 'Eu construo coisas.\nDepois escrevo sobre elas.',

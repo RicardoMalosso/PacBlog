@@ -11,3 +11,5 @@
 .project-audio h2{font-size:21px;line-height:1.4;letter-spacing:-.3px}
 .project-audio p{font-size:14px;color:var(--muted);margin:10px 0 18px}
 .project-audio audio{display:block;width:100%;max-width:600px}
+
+.project-media-detail{position:relative}.project-media-detail .detail-image{max-height:none}.replay-toggle{position:absolute;top:12px;right:12px;z-index:2;padding:7px 11px;border:1px solid #ebdbb288;background:#282828ee;color:#ebdbb2;border-radius:4px;font-size:11px;line-height:1.5}.project-card .replay-caption,.replay-caption{font-size:12px;color:var(--muted);line-height:1.6;margin-top:14px}.project-card h3 a:hover{color:var(--accent)}

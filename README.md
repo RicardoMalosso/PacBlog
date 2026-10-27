@@ -92,6 +92,6 @@ Timestamps are annotations, not audio controls. The current layout pairs the ori
 
 ## Portfolio and contact
 
-Edit `projects` in `src/data.ts` and put thumbnails in `public/images/`. Each project has PT-BR/English summaries and details, tags, and an optional repository URL. Omit `repo` for private source. Current thumbnails are custom SVG illustrations, not product screenshots or live election results. Replace them with actual screenshots when available.
+Edit `projects` in `src/data.ts` and put thumbnails in `public/images/`. Each project has PT-BR/English summaries and details, tags, and an optional repository URL. Omit `repo` for private source. PacTTSClone currently uses an SVG illustration. Election Tracker uses a replay captured from the actual interface with nine archived national bulletins, three seconds per update, automatic chart zoom, and no reaction media. Its filled state map shows real final state results as a clearly labeled fixed reference: historical state snapshots were not archived. The replay is available on both the landing page and project details, with a pause control and a static poster for reduced-motion preferences.
 
 Contact links are in `Contact` in `src/App.tsx`. Email uses `mailto:`; it does not submit a form to a server. Google Fonts is optional: the site falls back to system fonts if it is unavailable. No analytics or tracking code is included.
