@@ -95,3 +95,29 @@ test('résumé routes include localized content and both downloadable PDFs', () 
     }
   }
 });
+
+test('SRT parsing, bilingual alignment and playback gaps', async () => {
+  const { parseSrt, alignLyrics, activeRow, nearbyRow, formatTime } = await import('../.ssr/entry-server.js');
+  const pt = parseSrt('\uFEFF1\r\n00:00:01,000 --> 00:00:03,000\r\nPrimeira linha\r\nsegunda linha\r\n\r\n2\r\n00:00:05,000 --> 00:00:06,000\r\nOutra');
+  const en = parseSrt('1\n00:00:01.200 --> 00:00:02.800\nFirst line\n\n2\n00:00:07,000 --> 00:00:08,000\nUnmatched');
+  assert.equal(pt[0].text, 'Primeira linha\nsegunda linha');
+  const rows = alignLyrics(pt, en);
+  assert.equal(rows.length, 3); assert.equal(rows[0].en.text, 'First line');
+  assert.equal(rows[1].en, undefined); assert.equal(rows[2].pt, undefined);
+  assert.equal(activeRow(rows, 1.5), 0); assert.equal(activeRow(rows, 4), -1);
+  assert.equal(activeRow(rows, 5.5), 1); assert.equal(activeRow(rows, 7.5), 2);
+  assert.equal(nearbyRow(rows, 4), 0); assert.equal(nearbyRow(rows, 20), 2);
+  assert.equal(formatTime(3661), '1:01:01');
+  assert.throws(() => parseSrt('1\n00:00:03,000 --> 00:00:01,000\nbroken'), /Invalid SRT cue/);
+});
+
+test('music demo config links published subtitle files and localized post', () => {
+  const entries = loadContent().filter(x => x.slug === 'lyric-page-demo');
+  assert.equal(entries.length, 2);
+  for (const entry of entries) {
+    assert.equal(entry.player.youtubeId, 'M7lc1UVf-VE');
+    for (const file of Object.values(entry.player.subtitles)) assert(fs.existsSync(path.join('dist', file)));
+    const html = fs.readFileSync(outputFor(`/${entry.locale}/music/${entry.slug}/`), 'utf8');
+    assert(html.includes(entry.locale === 'en' ? 'Show full lyrics' : 'Mostrar letra completa'));
+  }
+});

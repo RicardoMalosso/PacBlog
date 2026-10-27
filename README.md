@@ -73,22 +73,23 @@ Create the other language’s file with the **same section and slug**, and `loca
 
 The language switch preserves the article when its translation exists. Otherwise, it links to the other language’s section with an explanatory notice. The initial language is chosen from a saved preference, then the browser language; explicit language URLs always win. Without JavaScript, the root page provides links to both languages and all prerendered content remains readable.
 
-## Lyric pages
+## Music posts and synchronized lyrics
 
-See `content/music/lyric-demo.*.md` for a clearly labeled original-text demonstration. Optional frontmatter:
+Music posts are Markdown files in `content/music/`, one per language. Write the article body normally; the player appears after it. To add a synchronized player, include this frontmatter in both localized posts:
 
 ```yaml
-artist: "Artist name"
-originalLanguage: "pt-BR"
-credits: "Writers, performers, translation credits, sources…"
-lyrics:
-  - time: "00:12"
-    original: "Original line"
-    translation: "English translation"
-    note: "Optional context or translation note."
+player:
+  youtubeId: "M7lc1UVf-VE"
+  subtitles:
+    en: "lyrics/demo/en.srt"
+    pt-br: "lyrics/demo/pt-br.srt"
 ```
 
-Timestamps are annotations, not audio controls. The current layout pairs the original with English; the page interface and contextual notes have separate PT-BR/English versions. No album recordings or third-party song lyrics are bundled.
+Place UTF-8 SRT files under `public/lyrics/`; their timestamps refer to the linked YouTube video's timeline. Use paths relative to `public/` (no leading slash). Both files are fetched and parsed in the browser; no backend is required. A valid 11-character YouTube ID and two existing SRT paths are checked at build time. Cue pairs are matched by their greatest overlapping time, one-to-one; unmatched cues are shown with a blank translation. Keep translations segmented similarly for best alignment. SRT cues support multiline text, CRLF and comma or dot millisecond separators. End times must be after start times. Instrumental gaps do not highlight a line.
+
+Visitors can switch between three-line and full lyrics, click a line to seek, and use Space/K to play or pause, arrows/H for five-second jumps, and J/L for ten-second jumps while focused on the page. Inputs and the seek slider retain their native keyboard controls; the embedded YouTube player receives its own keys. The YouTube embed must remain at least 200 × 200 pixels. Provide a public embeddable video and publish only lyrics you are entitled to use. The included demo uses original sample lines and an unrelated YouTube API demonstration video; its timing illustrates the feature rather than transcribing that video.
+
+Existing posts with `lyrics` frontmatter still render as static lyric pages. Credits and article copy remain localized independently of the bilingual SRT text.
 
 ## Portfolio and contact
 

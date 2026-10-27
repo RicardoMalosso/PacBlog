@@ -7,7 +7,12 @@ date: "2026-10-27"
 tags: ["Demonstração", "Letras"]
 artist: "Texto original de exemplo"
 originalLanguage: "pt-BR"
-credits: "Versos de exemplo escritos para este layout; não há gravação associada."
+player:
+  youtubeId: "M7lc1UVf-VE"
+  subtitles:
+    en: "lyrics/demo/en.srt"
+    pt-br: "lyrics/demo/pt-br.srt"
+credits: "Versos originais e tempos de exemplo. O vídeo é uma demonstração da API do YouTube, não uma gravação destes versos."
 lyrics:
   - time: "00:00"
     original: "Uma janela, um pedaço de céu"
@@ -20,7 +25,7 @@ lyrics:
     original: "E deixo a tarde levar"
     translation: "And let the afternoon carry them away"
 ---
-**Demonstração de layout.** Estes pequenos versos originais mostram como uma futura página de letras pode apresentar o texto original junto da tradução. Os tempos são ilustrativos e não estão ligados a um áudio.
+**Demonstração de layout.** Estes pequenos versos originais mostram como uma futura página de letras pode apresentar o texto original junto da tradução. Os tempos de exemplo demonstram a sincronização; o vídeo do YouTube é uma demonstração separada e não canta estes versos.
 
 ## Notas de escuta
 

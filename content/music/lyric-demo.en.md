@@ -7,7 +7,12 @@ date: "2026-10-27"
 tags: ["Demo", "Lyrics"]
 artist: "Original sample text"
 originalLanguage: "pt-BR"
-credits: "Sample lines written for this layout; no recording is attached."
+player:
+  youtubeId: "M7lc1UVf-VE"
+  subtitles:
+    en: "lyrics/demo/en.srt"
+    pt-br: "lyrics/demo/pt-br.srt"
+credits: "Original sample lines and illustrative timing. The video is a YouTube API demonstration, not a recording of these lyrics."
 lyrics:
   - time: "00:00"
     original: "Uma janela, um pedaço de céu"
@@ -20,7 +25,7 @@ lyrics:
     original: "E deixo a tarde levar"
     translation: "And let the afternoon carry them away"
 ---
-**Layout demonstration.** These short original lines show how a future lyric page can pair the original text with a translation. The timestamps are illustrative, not linked to audio.
+**Layout demonstration.** These short original lines show how a future lyric page can pair the original text with a translation. The sample timestamps demonstrate synchronization; the YouTube video is a separate demonstration and does not sing these lines.
 
 ## Listening notes
 
