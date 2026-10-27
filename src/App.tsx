@@ -52,7 +52,7 @@ function Article({ locale, section }: { locale: Locale; section: 'blog' | 'music
   if (!entry) return <NotFound locale={locale}/>;
   return <article className="article"><Link className="text-link back-link" to={pathFor(locale, section)}>← {t(section)}</Link><header className="article-heading"><p className="eyebrow">{t(section)} / <time dateTime={entry.date}>{date(entry.date, locale)}</time></p><h1>{entry.title}</h1><p>{entry.description}</p>{entry.artist && <p className="artist">{entry.artist}</p>}<div className="tags">{entry.tags?.map(tag => <span key={tag}>{tag}</span>)}</div></header><div className="prose"><ReactMarkdown remarkPlugins={[remarkGfm]}>{entry.body}</ReactMarkdown></div>{entry.lyrics && <section className="lyrics"><div className="lyrics-heading"><span/><h2>{t('original')}</h2><h2>{t('translation')}</h2></div>{entry.lyrics.map((line, i) => <div className="lyric-block" key={i}><div className="lyric-line"><span className="timestamp mono">{line.time}</span><p lang={entry.originalLanguage || 'pt-BR'}>{line.original}</p><p lang="en" className="lyric-translation">{line.translation}</p></div>{line.note && <details className="line-note"><summary>{t('notes')}</summary><p>{line.note}</p></details>}</div>)}</section>}{entry.credits && <aside className="credits"><h2>{t('credits')}</h2><p>{entry.credits}</p></aside>}</article>;
 }
-function ProjectMedia({ project, locale, detail = false }: { project: typeof projects[number]; locale: Locale; detail?: boolean }) {
+function ProjectMedia({ project, locale, detail = false, alt }: { project: { slug: string; name: string; image: string; replay: string | null }; locale: Locale; detail?: boolean; alt?: string }) {
   const { t } = useTranslation();
   const [playing, setPlaying] = useState(false);
   useEffect(() => {
@@ -63,10 +63,45 @@ function ProjectMedia({ project, locale, detail = false }: { project: typeof pro
     preference.addEventListener('change', changed);
     return () => preference.removeEventListener('change', changed);
   }, [project.replay]);
-  const visual = <img className={detail ? 'detail-image' : undefined} src={`${base}images/${playing && project.replay ? project.replay : project.image}`} alt={project.replay ? t('replayAlt') : `${project.name} — ${t('illustration')}`} width={project.replay ? 1200 : 760} height={project.replay ? 824 : 480}/>;
+  const visual = <img className={detail ? 'detail-image' : undefined} src={`${base}images/${playing && project.replay ? project.replay : project.image}`} alt={alt || (project.replay ? t('replayAlt') : `${project.name} — ${t('interfacePreview')}`)} width={1200} height={824}/>;
   return <div className={detail ? 'project-media-detail' : 'project-image'}>{detail ? visual : <Link to={pathFor(locale, 'portfolio', project.slug)}>{visual}<span className="project-open" aria-hidden="true">↗</span></Link>}{project.replay && <button className="replay-toggle" onClick={() => setPlaying(value => !value)} aria-pressed={playing}>{playing ? 'Ⅱ' : '▶'} {t(playing ? 'pauseReplay' : 'playReplay')}</button>}</div>;
 }
-function Project({ locale }: { locale: Locale }) { const { slug } = useParams(); const { t } = useTranslation(); const p = projects.find(x => x.slug === slug); if (!p) return <NotFound locale={locale}/>; return <article className="project-detail"><Link className="text-link back-link" to={pathFor(locale)}>← {t('portfolio')}</Link><header className="page-heading"><p className="eyebrow">{p.category}</p><h1>{p.name}<span className="accent">.</span></h1><p>{p[locale].description}</p></header><ProjectMedia project={p} locale={locale} detail/>{p.replay && <p className="replay-caption">{t('replayCaption')}</p>}<div className="project-description"><div className="tags">{p.tags.map(tag => <span key={tag}>{tag}</span>)}</div><p>{p[locale].detail}</p>{p.slug === 'pacttsclone' && locale === 'pt-br' && <section className="project-audio" aria-labelledby="project-audio-heading"><h2 id="project-audio-heading">Ouça a descrição deste projeto na voz do Bob Esponja</h2><p>Uma demonstração de voz gerada com o PacTTSClone.</p><audio controls preload="metadata" aria-label="Descrição do PacTTSClone na voz do Bob Esponja"><source src={`${base}audio/pacttsclone-descricao-pt-br.mp3`} type="audio/mpeg"/><a href={`${base}audio/pacttsclone-descricao-pt-br.mp3`}>Baixar a descrição em áudio</a></audio></section>}{p.repo && <a className="button" href={p.repo}>{t('code')} ↗</a>}</div></article>; }
+function Project({ locale }: { locale: Locale }) {
+  const { slug } = useParams();
+  const { t } = useTranslation();
+  const p = projects.find(x => x.slug === slug);
+  if (!p) return <NotFound locale={locale}/>;
+  const isElection = p.slug === 'election-tracker';
+  const audioFile = locale === 'en' ? 'pacttsclone-descricao-en.mp3' : 'pacttsclone-descricao-pt-br.mp3';
+  return <article className="project-detail">
+    <Link className="text-link back-link" to={pathFor(locale)}>← {t('portfolio')}</Link>
+    <header className="page-heading"><p className="eyebrow">{p.category}</p><h1>{p.name}<span className="accent">.</span></h1><p>{p[locale].description}</p></header>
+    <div className="project-description">
+      <div className="tags">{p.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
+      <p>{p[locale].detail}</p>
+      {!isElection && <section className="project-audio" aria-labelledby="project-audio-heading">
+        <h2 id="project-audio-heading">{t('narrationHeading')}</h2>
+        <p>{t('narrationCaption')}</p>
+        <audio key={locale} controls preload="metadata" aria-label={t('narrationHeading')}>
+          <source src={`${base}audio/${audioFile}`} type="audio/mpeg"/>
+          <a href={`${base}audio/${audioFile}`}>{t('downloadNarration')}</a>
+        </audio>
+      </section>}
+      {p.repo && <a className="button" href={p.repo}>{t('code')} ↗</a>}
+    </div>
+    <section className="project-demo">
+      <h2>{t(isElection ? 'fullDashboardReplay' : 'studioInterface')}</h2>
+      <ProjectMedia project={p} locale={locale} detail/>
+      <p className="replay-caption">{t(isElection ? 'replayCaption' : 'interfacePreviewCaption')}</p>
+    </section>
+    <section className="project-demo">
+      <h2>{t(isElection ? 'chartReplay' : 'speechControls')}</h2>
+      {isElection ? <ProjectMedia project={{...p, image: 'election-chart-poster.jpg', replay: 'election-chart-replay.gif'}} locale={locale} detail alt={t('chartReplay')}/> : <img className="detail-image" src={`${base}images/pacttsclone-controls.jpg`} alt={`${p.name} — ${t('speechControls')}`} width={1363} height={936} loading="lazy"/>}
+      <p className="replay-caption">{t(isElection ? 'chartReplayCaption' : 'interfacePreviewCaption')}</p>
+    </section>
+
+  </article>;
+}
 function Contact() { const { t } = useTranslation(); return <><PageHeading section="contact"/><section className="contact-panel"><p className="eyebrow">{t('email')}</p><a className="email-address" href="mailto:ricardomalosso@gmail.com">ricardomalosso<br className="mobile-break"/>@gmail.com <span>↗</span></a><div className="contact-bottom"><p>{t('location')}</p><div><span className="mono">{t('elsewhere')}</span><a href="https://github.com/RicardoMalosso">GitHub ↗</a><a href="https://www.linkedin.com/in/ricardo-rodrigues-malosso-9b4848112/">LinkedIn ↗</a></div></div></section></>; }
 function NotFound({ locale }: { locale: Locale }) { const { t } = useTranslation(); return <section className="page-heading not-found"><p className="eyebrow">404</p><h1>{t('notFound')}</h1><p>{t('notFoundText')}</p><Link className="button" to={pathFor(locale)}>{t('home')} ↗</Link></section>; }
 function LanguageGate() {

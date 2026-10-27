@@ -2,6 +2,13 @@ import { createInstance } from 'i18next';
 import type { Locale } from './types';
 export const locales: Locale[] = ['pt-br', 'en'];
 const en = {
+  fullDashboardReplay: 'Full dashboard replay', chartReplay: 'Chart replay with automatic zoom',
+  chartReplayCaption: 'The same 9 archived national bulletins, with a three-second countdown between updates and automatic chart zoom.',
+  studioInterface: 'The voice studio', speechControls: 'Speech controls', interfacePreview: 'Interface preview',
+  interfacePreviewCaption: 'Screenshots of the actual interface with sample text. No voice inference was running when captured.',
+  narrationHeading: 'Hear this project description in the voice of Optimus Prime',
+  narrationCaption: 'A voice demo generated with PacTTSClone.', downloadNarration: 'Download the audio description',
+
   playReplay: 'Play replay', pauseReplay: 'Pause replay', replayAlt: 'Archived vote-count replay with chart and state map', replayCaption: 'Replay of 9 archived national bulletins, updated every 3 seconds. State map: real final results, shown as a fixed reference.',
   portfolio: 'Portfolio', blog: 'Blog', music: 'Music', experiments: 'Experiments', contact: 'Contact',
   skip: 'Skip to content', menu: 'Navigation', language: 'Language', theme: 'Change color theme',
@@ -23,6 +30,13 @@ const en = {
   fallback: 'This page is not available in the other language yet. Here are the available entries.',
 };
 const pt: typeof en = {
+  fullDashboardReplay: 'Replay do painel completo', chartReplay: 'Replay do gráfico com zoom automático',
+  chartReplayCaption: 'Os mesmos 9 boletins nacionais arquivados, com contagem de três segundos entre atualizações e zoom automático no gráfico.',
+  studioInterface: 'O estúdio de voz', speechControls: 'Controles de fala', interfacePreview: 'Prévia da interface',
+  interfacePreviewCaption: 'Capturas da interface real com texto de exemplo. Não havia geração de voz em execução durante a captura.',
+  narrationHeading: 'Ouça a descrição deste projeto na voz do Bob Esponja',
+  narrationCaption: 'Uma demonstração de voz gerada com o PacTTSClone.', downloadNarration: 'Baixar a descrição em áudio',
+
   playReplay: 'Reproduzir replay', pauseReplay: 'Pausar replay', replayAlt: 'Replay da apuração arquivada com gráfico e mapa dos estados', replayCaption: 'Replay de 9 boletins nacionais arquivados, com atualização a cada 3 segundos. Mapa estadual: resultados finais reais, como referência fixa.',
   portfolio: 'Portfólio', blog: 'Blog', music: 'Música', experiments: 'Experimentos', contact: 'Contato',
   skip: 'Pular para o conteúdo', menu: 'Navegação', language: 'Idioma', theme: 'Mudar tema de cores',

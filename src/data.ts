@@ -4,7 +4,7 @@ export const content = entries as Entry[];
 export const base = import.meta.env.BASE_URL;
 export const siteUrl = 'https://ricardomalosso.github.io';
 export const projects = [
-  { slug: 'pacttsclone', name: 'PacTTSClone', category: 'PYTHON / AI / AUDIO', image: 'voice.svg', replay: null, tags: ['Python', 'OmniVoice', 'Twitch / OBS'], repo: 'https://github.com/RicardoMalosso/PacTTSClone',
+  { slug: 'pacttsclone', name: 'PacTTSClone', category: 'PYTHON / AI / AUDIO', image: 'pacttsclone-studio.jpg', replay: null, tags: ['Python', 'OmniVoice', 'Twitch / OBS'], repo: 'https://github.com/RicardoMalosso/PacTTSClone',
     en: { description: 'Local voice generation, built for streamers.', detail: 'A desktop-hosted application that turns a reference MP3 and text into generated speech with OmniVoice. Includes saved voices, generation monitoring, and Twitch and OBS integrations.' },
     'pt-br': { description: 'Geração de voz local, pensada para streamers.', detail: 'Uma aplicação executada localmente que transforma um MP3 de referência e um texto em fala com o OmniVoice. Inclui vozes salvas, monitoramento de geração e integrações com Twitch e OBS.' } },
   { slug: 'election-tracker', name: 'Election Tracker', category: 'DATA / VISUALIZATION', image: 'election-tracker-poster.jpg', replay: 'election-tracker-replay.gif', tags: ['TSE', 'Data visualization', 'Caching'], repo: null,
