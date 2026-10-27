@@ -37,6 +37,13 @@ export function alignLyrics(pt: Cue[], en: Cue[]): LyricRow[] {
 export function activeRow(rows: LyricRow[], time: number): number {
   return rows.findIndex(row => (row.pt && time >= row.pt.start && time < row.pt.end) || (row.en && time >= row.en.start && time < row.en.end));
 }
+/** Hold the most recent line through silence; seeking before the first line clears it. */
+export function selectedRow(rows: LyricRow[], time: number): number {
+  const active = activeRow(rows, time);
+  if (active >= 0) return active;
+  for (let i = rows.length - 1; i >= 0; i--) if (rows[i].start <= time) return i;
+  return -1;
+}
 export function nearbyRow(rows: LyricRow[], time: number): number {
   const active = activeRow(rows, time);
   if (active >= 0) return active;
