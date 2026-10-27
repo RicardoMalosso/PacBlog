@@ -1,0 +1,3 @@
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+export default defineConfig(({ isSsrBuild }) => ({ plugins: [react(), { name: 'dev-html', transformIndexHtml(html, context) { return context.server ? html.replace('__LANG__', 'pt-BR').replace('__TITLE__', 'PacBlog').replace('__DESCRIPTION__', 'Ricardo Malosso').replace('__SEO__', '') : html; } }], server: { allowedHosts: ['terminal.local'] }, base: process.env.BASE_PATH || '/PacBlog/', build: { outDir: 'dist', rollupOptions: { output: { manualChunks: isSsrBuild ? undefined : { markdown: ['react-markdown', 'remark-gfm'] } } } } }));

@@ -1,0 +1,48 @@
+import { createInstance } from 'i18next';
+import type { Locale } from './types';
+export const locales: Locale[] = ['pt-br', 'en'];
+const en = {
+  portfolio: 'Portfolio', blog: 'Blog', music: 'Music', experiments: 'Experiments', contact: 'Contact',
+  skip: 'Skip to content', menu: 'Navigation', language: 'Language', theme: 'Change color theme',
+  eyebrow: 'SOFTWARE · MUSIC · CURIOSITY', hello: 'Hi, I’m Ricardo.', hero: 'I build things.\nThen I write about them.',
+  intro: 'Software developer based in Brazil. A collection of projects, notes, music, and ideas worth exploring.',
+  explore: 'Explore my work', about: 'Let’s talk', selected: 'Selected projects', selectedIntro: 'Some things I’ve been working on.',
+  project: 'View project', code: 'Source on GitHub', illustration: 'Project illustration', latest: 'From the notebook', allPosts: 'All posts',
+  blogIntro: 'Development notes, things I learn, and ideas that need more than a few lines.',
+  musicIntro: 'Listening closely. Lyrics, translations, and the stories around the music.',
+  experimentsIntro: 'Small ideas you can play with. Everything here runs in your browser.',
+  contactIntro: 'Have a project in mind, a question, or a song I should hear? Get in touch.',
+  email: 'Send an email', elsewhere: 'Find me elsewhere', location: 'Mogi das Cruzes, São Paulo · Brazil',
+  footer: 'Made by Ricardo Malosso. Always a work in progress.', back: 'Back', read: 'Read article',
+  notFound: 'This page got lost.', notFoundText: 'The link may have changed, or the page does not exist yet.', home: 'Back to the portfolio',
+  original: 'Original', translation: 'English translation', notes: 'Line note', credits: 'Credits',
+  filter: 'Search articles', noResults: 'No articles found. Try another search.', all: 'All',
+  contrast: 'The contrast lab', contrastIntro: 'Move the sliders and see how a color changes readability.', hue: 'Hue', lightness: 'Lightness', sample: 'Make something worth sharing.', ratio: 'Contrast ratio', accessible: 'Passes WCAG AA for normal text', inaccessible: 'Below WCAG AA for normal text', reset: 'Reset',
+  approach: 'ABOUT MY WORK', approachTitle: 'Useful software.\nRoom to explore.', approachText: 'My work spans C#/.NET, JavaScript, Python, and AI integrations. This site brings that work together with the other things I care about.',
+  fallback: 'This page is not available in the other language yet. Here are the available entries.',
+};
+const pt: typeof en = {
+  portfolio: 'Portfólio', blog: 'Blog', music: 'Música', experiments: 'Experimentos', contact: 'Contato',
+  skip: 'Pular para o conteúdo', menu: 'Navegação', language: 'Idioma', theme: 'Mudar tema de cores',
+  eyebrow: 'SOFTWARE · MÚSICA · CURIOSIDADE', hello: 'Oi, eu sou o Ricardo.', hero: 'Eu construo coisas.\nDepois escrevo sobre elas.',
+  intro: 'Desenvolvedor de software no Brasil. Uma coleção de projetos, notas, músicas e ideias que valem explorar.',
+  explore: 'Conheça meu trabalho', about: 'Vamos conversar', selected: 'Projetos selecionados', selectedIntro: 'Algumas coisas em que tenho trabalhado.',
+  project: 'Ver projeto', code: 'Código no GitHub', illustration: 'Ilustração do projeto', latest: 'Do caderno', allPosts: 'Todos os textos',
+  blogIntro: 'Notas de desenvolvimento, aprendizados e ideias que precisam de mais de algumas linhas.',
+  musicIntro: 'Escutando com atenção. Letras, traduções e as histórias ao redor da música.',
+  experimentsIntro: 'Pequenas ideias para testar. Tudo aqui funciona no seu navegador.',
+  contactIntro: 'Tem um projeto em mente, uma pergunta ou uma música que eu preciso ouvir? Entre em contato.',
+  email: 'Enviar um e-mail', elsewhere: 'Me encontre também', location: 'Mogi das Cruzes, São Paulo · Brasil',
+  footer: 'Feito por Ricardo Malosso. Sempre em construção.', back: 'Voltar', read: 'Ler texto',
+  notFound: 'Esta página se perdeu.', notFoundText: 'O endereço pode ter mudado, ou a página ainda não existe.', home: 'Voltar ao portfólio',
+  original: 'Original', translation: 'Tradução em inglês', notes: 'Nota do verso', credits: 'Créditos',
+  filter: 'Buscar textos', noResults: 'Nenhum texto encontrado. Tente outra busca.', all: 'Todos',
+  contrast: 'Laboratório de contraste', contrastIntro: 'Mova os controles e veja como uma cor muda a legibilidade.', hue: 'Matiz', lightness: 'Luminosidade', sample: 'Faça algo que valha compartilhar.', ratio: 'Razão de contraste', accessible: 'Atende à WCAG AA para texto normal', inaccessible: 'Abaixo da WCAG AA para texto normal', reset: 'Restaurar',
+  approach: 'SOBRE MEU TRABALHO', approachTitle: 'Software útil.\nEspaço para explorar.', approachText: 'Meu trabalho passa por C#/.NET, JavaScript, Python e integrações com IA. Este site reúne esses projetos e as outras coisas que me interessam.',
+  fallback: 'Esta página ainda não está disponível no outro idioma. Veja os textos disponíveis.',
+};
+export function createI18n(locale: Locale) {
+  const instance = createInstance();
+  void instance.init({ lng: locale, fallbackLng: 'pt-br', resources: { en: { translation: en }, 'pt-br': { translation: pt } }, initAsync: false, lowerCaseLng: true, load: 'currentOnly', showSupportNotice: false, interpolation: { escapeValue: false } });
+  return instance;
+}
