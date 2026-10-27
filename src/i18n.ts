@@ -2,6 +2,7 @@ import { createInstance } from 'i18next';
 import type { Locale } from './types';
 export const locales: Locale[] = ['pt-br', 'en'];
 const en = {
+  resume: 'Résumé', resumeIntro: 'My experience, skills, and recent projects.', downloadResume: 'Download résumé (PDF)', resumeUpdated: 'Updated',
   fullDashboardReplay: 'Full dashboard replay', chartReplay: 'Chart replay with automatic zoom',
   chartReplayCaption: 'The same nine archived national bulletins, with a three-second countdown between updates and automatic chart zoom. The recorded interface is in Portuguese.',
   studioInterface: 'The voice studio', speechControls: 'Speech controls', interfacePreview: 'Interface preview',
@@ -30,6 +31,7 @@ const en = {
   fallback: 'This page is not available in the other language yet. Here are the available entries.',
 };
 const pt: typeof en = {
+  resume: 'Currículo', resumeIntro: 'Minha experiência, competências e projetos recentes.', downloadResume: 'Baixar currículo (PDF)', resumeUpdated: 'Atualizado em',
   fullDashboardReplay: 'Replay do painel completo', chartReplay: 'Replay do gráfico com zoom automático',
   chartReplayCaption: 'Os mesmos 9 boletins nacionais arquivados, com contagem regressiva de três segundos entre atualizações e zoom automático no gráfico.',
   studioInterface: 'O estúdio de voz', speechControls: 'Controles de fala', interfacePreview: 'Prévia da interface',

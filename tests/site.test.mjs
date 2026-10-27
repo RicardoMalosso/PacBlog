@@ -75,3 +75,23 @@ test('shared interface copy stays localized across every published page', () => 
   assert(fs.readFileSync(outputFor('/pt-br/experiments/'), 'utf8').includes('6,34'));
   assert(fs.readFileSync(outputFor('/en/experiments/'), 'utf8').includes('6.34'));
 });
+
+test('résumé routes include localized content and both downloadable PDFs', () => {
+  for (const [locale, title, summary] of [['en', 'Résumé', 'Professional Summary'], ['pt-br', 'Currículo', 'Resumo profissional']]) {
+    const route = `/${locale}/resume/`;
+    assert(routes.includes(route));
+    const html = fs.readFileSync(outputFor(route), 'utf8');
+    assert(html.includes(`${title} · Ricardo Malosso`));
+    assert(html.includes(summary));
+    assert(html.includes('Wipro'));
+    assert(html.includes('CGI Group'));
+    assert(html.includes('PacTTSClone'));
+    assert.equal(alternatePath(route, locale === 'en' ? 'pt-br' : 'en'), `/${locale === 'en' ? 'pt-br' : 'en'}/resume/`);
+    for (const file of ['Ricardo_Malosso_Resume_EN.pdf', 'Ricardo_Malosso_CV.pdf']) {
+      assert(html.includes(`${base}resumes/${file}`));
+      const pdf = fs.readFileSync(`dist/resumes/${file}`);
+      assert.equal(pdf.subarray(0, 5).toString(), '%PDF-');
+      assert(pdf.equals(fs.readFileSync(`public/resumes/${file}`)));
+    }
+  }
+});

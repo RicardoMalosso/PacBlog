@@ -5,10 +5,12 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { createI18n } from './i18n';
 import { alternatePath, base, content, pathFor, projects, publicPath, routeMetadata, siteUrl } from './data';
+import resumeEn from './resumes/en.md?raw';
+import resumePt from './resumes/pt-br.md?raw';
 import ContrastLab from './components/ContrastLab';
 import type { Entry, Locale, Section } from './types';
 
-const sections: Section[] = ['portfolio', 'blog', 'music', 'experiments', 'contact'];
+const sections: Section[] = ['portfolio', 'blog', 'music', 'experiments', 'resume', 'contact'];
 const date = (value: string, locale: Locale) => new Intl.DateTimeFormat(locale === 'en' ? 'en-CA' : 'pt-BR', { dateStyle: 'medium', timeZone: 'UTC' }).format(new Date(value + 'T12:00:00Z'));
 function LocaleRoot() {
   const { locale } = useParams();
@@ -32,7 +34,7 @@ function Layout({ locale }: { locale: Locale }) {
   }, [locale, location.pathname]);
   function theme() { setLight(x => { try { localStorage.setItem('pacblog-theme', x ? 'dark' : 'light'); } catch {} return !x; }); }
   const other: Locale = locale === 'en' ? 'pt-br' : 'en';
-  return <><a className="skip" href="#main">{t('skip')}</a><header className="site-header wrap"><Link className="brand" to={pathFor(locale)} aria-label={`Ricardo Malosso — ${t('portfolio')}`}><span className="brand-mark">r<span>m</span>.</span><span className="brand-name">ricardo<br/>malosso</span></Link><nav aria-label={t('menu')}>{sections.map(s => <NavLink key={s} to={pathFor(locale, s === 'portfolio' ? '' : s)} end={s === 'portfolio'}>{t(s)}</NavLink>)}</nav><div className="utilities"><Link className="locale" to={alternatePath(location.pathname, other)} aria-label={`${t('language')}: ${other === 'en' ? 'English' : 'Português brasileiro'}`} lang={other === 'en' ? 'en' : 'pt-BR'} hrefLang={other === 'en' ? 'en' : 'pt-BR'}>{locale === 'en' ? '🇧🇷 PT-BR' : '🇨🇦 EN'} <span>↗</span></Link><button className="theme-button" onClick={theme} aria-label={t('theme')}>{light ? '◐' : '◑'}</button></div></header><main id="main" className="wrap" tabIndex={-1}><Routes><Route index element={<Portfolio locale={locale}/>}/><Route path="portfolio/:slug" element={<Project locale={locale}/>}/><Route path="blog" element={<Listing locale={locale} section="blog"/>}/><Route path="music" element={<Listing locale={locale} section="music"/>}/><Route path="blog/:slug" element={<Article locale={locale} section="blog"/>}/><Route path="music/:slug" element={<Article locale={locale} section="music"/>}/><Route path="experiments" element={<><PageHeading section="experiments"/><ContrastLab/></>}/><Route path="contact" element={<Contact/>}/><Route path="*" element={<NotFound locale={locale}/>}/></Routes></main><footer className="wrap site-footer"><Link className="footer-logo" to={pathFor(locale)}>rm.</Link><p>{t('footer')}</p><a href="https://github.com/RicardoMalosso">GitHub ↗</a><span className="footer-locale">{locale === 'en' ? '🇨🇦 EN' : '🇧🇷 PT-BR'}</span></footer></>;
+  return <><a className="skip" href="#main">{t('skip')}</a><header className="site-header wrap"><Link className="brand" to={pathFor(locale)} aria-label={`Ricardo Malosso — ${t('portfolio')}`}><span className="brand-mark">r<span>m</span>.</span><span className="brand-name">ricardo<br/>malosso</span></Link><nav aria-label={t('menu')}>{sections.map(s => <NavLink key={s} to={pathFor(locale, s === 'portfolio' ? '' : s)} end={s === 'portfolio'}>{t(s)}</NavLink>)}</nav><div className="utilities"><Link className="locale" to={alternatePath(location.pathname, other)} aria-label={`${t('language')}: ${other === 'en' ? 'English' : 'Português brasileiro'}`} lang={other === 'en' ? 'en' : 'pt-BR'} hrefLang={other === 'en' ? 'en' : 'pt-BR'}>{locale === 'en' ? '🇧🇷 PT-BR' : '🇨🇦 EN'} <span>↗</span></Link><button className="theme-button" onClick={theme} aria-label={t('theme')}>{light ? '◐' : '◑'}</button></div></header><main id="main" className="wrap" tabIndex={-1}><Routes><Route index element={<Portfolio locale={locale}/>}/><Route path="portfolio/:slug" element={<Project locale={locale}/>}/><Route path="blog" element={<Listing locale={locale} section="blog"/>}/><Route path="music" element={<Listing locale={locale} section="music"/>}/><Route path="blog/:slug" element={<Article locale={locale} section="blog"/>}/><Route path="music/:slug" element={<Article locale={locale} section="music"/>}/><Route path="experiments" element={<><PageHeading section="experiments"/><ContrastLab/></>}/><Route path="resume" element={<Resume locale={locale}/>}/><Route path="contact" element={<Contact/>}/><Route path="*" element={<NotFound locale={locale}/>}/></Routes></main><footer className="wrap site-footer"><Link className="footer-logo" to={pathFor(locale)}>rm.</Link><p>{t('footer')}</p><a href="https://github.com/RicardoMalosso">GitHub ↗</a><span className="footer-locale">{locale === 'en' ? '🇨🇦 EN' : '🇧🇷 PT-BR'}</span></footer></>;
 }
 function Portfolio({ locale }: { locale: Locale }) {
   const { t } = useTranslation(); const posts = content.filter(x => x.locale === locale && x.section === 'blog').slice(0, 2);
@@ -100,6 +102,17 @@ function Project({ locale }: { locale: Locale }) {
       <p className="replay-caption">{t(isElection ? 'chartReplayCaption' : 'interfacePreviewCaption')}</p>
     </section>
 
+  </article>;
+}
+function Resume({ locale }: { locale: Locale }) {
+  const { t } = useTranslation();
+  return <article className="resume-page"><PageHeading section="resume"/>
+    <div className="resume-actions">
+      <a className="button" href={`${base}resumes/${locale === 'en' ? 'Ricardo_Malosso_Resume_EN.pdf' : 'Ricardo_Malosso_CV.pdf'}`} download>{t('downloadResume')} ↓</a>
+      <a className="text-link" href={`${base}resumes/${locale === 'en' ? 'Ricardo_Malosso_CV.pdf' : 'Ricardo_Malosso_Resume_EN.pdf'}`} hrefLang={locale === 'en' ? 'pt-BR' : 'en'} download>{locale === 'en' ? '🇧🇷 PDF em português' : '🇨🇦 PDF in English'} ↓</a>
+      <p className="mono">{t('resumeUpdated')} <time dateTime="2026-10-26">{date('2026-10-26', locale)}</time></p>
+    </div>
+    <div className="prose resume-content"><ReactMarkdown remarkPlugins={[remarkGfm]}>{locale === 'en' ? resumeEn : resumePt}</ReactMarkdown></div>
   </article>;
 }
 function Contact() { const { t } = useTranslation(); return <><PageHeading section="contact"/><section className="contact-panel"><p className="eyebrow">{t('email')}</p><a className="email-address" href="mailto:ricardomalosso@gmail.com">ricardomalosso<br className="mobile-break"/>@gmail.com <span>↗</span></a><div className="contact-bottom"><p>{t('location')}</p><div><span className="mono">{t('elsewhere')}</span><a href="https://github.com/RicardoMalosso">GitHub ↗</a><a href="https://www.linkedin.com/in/ricardo-rodrigues-malosso-9b4848112/">LinkedIn ↗</a></div></div></section></>; }
