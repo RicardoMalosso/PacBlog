@@ -2,6 +2,7 @@ import { createInstance } from 'i18next';
 import type { Locale } from './types';
 export const locales: Locale[] = ['pt-br', 'en'];
 const en = {
+  downloadLrc: 'Download selected lyrics (.lrc)',
   lyricExperiment: 'Lyrics player', lyricExperimentIntro: 'Choose a YouTube video and search LRCLIB for timed lyrics. Compare the results and choose the recording that fits.', songSearch: 'Song and artist', songPlaceholder: 'e.g. Nelson Cavaquinho Juízo Final', youtubeLink: 'YouTube URL', findLyrics: 'Find lyrics', searchingLyrics: 'Searching LRCLIB…', invalidYoutube: 'Enter a valid YouTube video URL.', missingSong: 'Enter a song name.', lrclibError: 'Could not reach LRCLIB. Please try again.', candidateMatches: 'Lyrics matches', videoDuration: 'Video duration', durationHint: 'Results with synced lyrics are ordered by closest duration; recordings can differ.', durationPending: 'Waiting for YouTube video duration. Play the video if needed; results are in search order until then.', noLyricMatches: 'No results found. Try another song or artist name.', syncedAvailable: 'Timed lyrics', noSyncedLyrics: 'No timed lyrics', lyricsSource: 'Lyrics supplied by', chooseSyncedLyrics: 'Choose a result with timed lyrics above.', durationDifference_one: '{{count}} second difference', durationDifference_other: '{{count}} seconds difference',
 
   syncPrompt: 'Lyrics out of sync?', lyricsEarly: 'Lyrics are early', lyricsLate: 'Lyrics are late', syncReset: 'Reset', syncOffset: 'Lyrics timing adjustment',
@@ -37,6 +38,7 @@ const en = {
   fallback: 'This page is not available in the other language yet. Here are the available entries.',
 };
 const pt: typeof en = {
+  downloadLrc: 'Baixar letra selecionada (.lrc)',
   lyricExperiment: 'Player de letras', lyricExperimentIntro: 'Escolha um vídeo do YouTube e busque letras sincronizadas no LRCLIB. Compare os resultados e escolha a gravação correspondente.', songSearch: 'Música e artista', songPlaceholder: 'ex.: Nelson Cavaquinho Juízo Final', youtubeLink: 'Link do YouTube', findLyrics: 'Buscar letra', searchingLyrics: 'Buscando no LRCLIB…', invalidYoutube: 'Insira um link válido de vídeo do YouTube.', missingSong: 'Digite o nome da música.', lrclibError: 'Não foi possível acessar o LRCLIB. Tente novamente.', candidateMatches: 'Letras encontradas', videoDuration: 'Duração do vídeo', durationHint: 'Os resultados sincronizados são ordenados pela duração mais próxima; as gravações podem ser diferentes.', durationPending: 'Aguardando a duração do vídeo. Se necessário, dê play; até lá, os resultados seguem a ordem da busca.', noLyricMatches: 'Nenhum resultado encontrado. Tente outro nome de música ou artista.', syncedAvailable: 'Letra sincronizada', noSyncedLyrics: 'Sem letra sincronizada', lyricsSource: 'Letras fornecidas por', chooseSyncedLyrics: 'Escolha acima um resultado com letra sincronizada.', durationDifference_one: '{{count}} segundo de diferença', durationDifference_other: '{{count}} segundos de diferença',
 
   syncPrompt: 'Letra fora de sincronia?', lyricsEarly: 'Letra adiantada', lyricsLate: 'Letra atrasada', syncReset: 'Restaurar', syncOffset: 'Ajuste de tempo da letra',

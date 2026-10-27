@@ -52,6 +52,7 @@ export default function LyricsExperiment() {
         <p className="player-caption">{t('lyricsSource')} <a href="https://lrclib.net/" target="_blank" rel="noreferrer">LRCLIB ↗</a></p>
       </div>
       <LyricsPlayer key={video} config={{youtubeId:video,lrc:picked?.syncedLyrics ?? '',lyricLabel: picked?.trackName}} onDuration={durationChanged}/>
+      {picked?.syncedLyrics && <p className="lrc-download"><a className="button" href={`data:text/plain;charset=utf-8,${encodeURIComponent(picked.syncedLyrics)}`} download={`${`${picked.artistName} - ${picked.trackName}`.replace(/[<>:"/\\|?*\x00-\x1f]/g, '_').slice(0, 150)}.lrc`}>{t('downloadLrc')} ↓</a></p>}
     </>}
   </section>;
 }
