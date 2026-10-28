@@ -13,7 +13,9 @@ player:
     pt-br: "lyrics/construcao/pt-br.lrc"
 ---
 
-This is the first installment of my series on Brazilian music, where I'll be sharing some of my favorite songs from Brazil, along with their history and cultural context.
+This is the first installment of my series on Brazilian music, where I'll be sharing some of my favorite songs from Brazil, along with some history and cultural context.
+
+In this website, when a word or a phrase has a [dotted underline](# Design Is my passion), you can mouse-over it and it should offer some extra context, or an explanation.
 
 We're starting with **Construção** (*Construction*), by [**Chico Buarque**](https://en.wikipedia.org/wiki/Chico_Buarque), released in **1971**. It follows a construction worker's final day through a combination of everyday details, unsettling images, and carefully arranged repetition.
 
