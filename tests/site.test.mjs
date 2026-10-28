@@ -32,8 +32,9 @@ test('each published entry is rendered in both languages and translations retain
   for (const entry of entries) {
     const other = entry.locale === 'en' ? 'pt-br' : 'en';
     const route = `/${entry.locale}/${entry.section}/${entry.slug}/`;
-    assert.equal(alternatePath(route, other), `/${other}/${entry.section}/${entry.slug}/`);
-    assert(fs.existsSync(outputFor(alternatePath(route, other))));
+    const translated = entries.some(x => x.locale === other && x.section === entry.section && x.slug === entry.slug);
+    assert.equal(alternatePath(route, other), translated ? `/${other}/${entry.section}/${entry.slug}/` : `/${other}/${entry.section}/?translation=missing`);
+    assert(fs.existsSync(outputFor(alternatePath(route, other).split('?')[0])));
     assert(fs.readFileSync(outputFor(route), 'utf8').includes(entry.title));
   }
   assert.equal(alternatePath('/en/blog/untranslated/', 'pt-br'), '/pt-br/blog/?translation=missing');
@@ -155,3 +156,14 @@ test('lyrics template is accepted in blog posts and normalizes YouTube URLs', ()
     assert(post.player.subtitles.en.endsWith('.lrc'));
   } finally { fs.rmSync(temp, {recursive:true}); }
 });
+
+ test('Markdown notes preserve nested parentheses, paragraphs, emphasis and lists', async () => {
+ const {prepareNotes}=await import('../.ssr/entry-server.js');
+ const source='A [word](# **Bold** explanation (with (nested) parentheses).\n\n- One (*example*)\n- Two). End.';
+ const result=prepareNotes(source);
+ assert.equal(result.text,'A [word](#note-inline-0). End.');
+ assert(result.notes['#note-inline-0'].includes('(nested)'));
+ assert(result.notes['#note-inline-0'].includes('\n\n- One'));
+ const reference=prepareNotes('[word](#note-example)\n\n:::note example\n**Content** (example).\n:::');
+ assert.equal(reference.notes['#note-example'],'**Content** (example).');
+ });

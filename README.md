@@ -131,4 +131,23 @@ For a text note that fades in on hover, keyboard focus or tap:
 This is a [word with context](#note "This explanation appears in a floating text box.").
 ```
 
-Note text is plain text. Everything works on GitHub Pages without a backend.
+Hover notes also accept full Markdown, paragraphs and balanced parentheses:
+
+```markdown
+[term](# **Bold explanation**, including (parentheses).
+
+- A list item
+- Another item)
+```
+
+For longer notes, use a reference:
+
+```markdown
+[term](#note-context)
+
+:::note context
+A **Markdown** explanation with paragraphs and lists.
+:::
+```
+
+Keep reference definitions outside fenced code blocks. Notes fade in on hover/focus and can be scrolled or opened by tapping. Everything works on GitHub Pages without a backend.
