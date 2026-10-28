@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import { base } from '../data';
 
-const seenKey = 'pacblog-hover-discovered';
 export default function HoverHint() {
   const [position,setPosition]=useState<{x:number;y:number}|null>(null);
   const [leaving,setLeaving]=useState(false);
   useEffect(()=>{
     const desktop=window.matchMedia('(min-width: 900px) and (hover: hover) and (pointer: fine)');
-    let seen=false; try {seen=localStorage.getItem(seenKey)==='1';}catch{}
-    if(seen)return;
+    let seen=false;
+    setLeaving(false);
     let shown=false, frame=0, timer=0;
     const update=()=>{
       frame=0;if(seen||!desktop.matches){if(!seen)setPosition(null);return;}
@@ -21,8 +20,8 @@ export default function HoverHint() {
     };
     const schedule=()=>{if(!frame)frame=requestAnimationFrame(update);};
     const discovered=(event:Event)=>{
-      if(!(event.target instanceof Element)||!event.target.closest('article .post-note > button'))return;
-      seen=true;try{localStorage.setItem(seenKey,'1');}catch{}
+      if(seen||!(event.target instanceof Element)||!event.target.closest('article .post-note > button'))return;
+      seen=true;
       setLeaving(true);timer=window.setTimeout(()=>setPosition(null),450);
     };
     document.addEventListener('pointerover',discovered,true);
