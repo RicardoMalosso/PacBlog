@@ -68,3 +68,5 @@ Chico develops this through repetition rather than a separate explanation. Words
 Some listeners hear the three sections as different accounts of the same death; others hear different workers passing through the same conditions. The lyrics leave room for either reading. In both, the repetition makes the worker's fate feel reproducible.
 
 For further reading on how the orchestration communicates meaning in this song, see Gil Jardim's [“Arrangement as the Structure and Fabric of Musical Discourse”](https://revistas.usp.br/revusp/pt_BR/article/view/127599) (in Portuguese).
+
+By the way, If you enjoyed this, you might also enjoy this [other song by chico](https://ricardomalosso.github.io/PacBlog/en/music/apesar-de-voce/) is even less subtle about the criticism to the military dictatorship.
