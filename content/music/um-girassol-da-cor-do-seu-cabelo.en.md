@@ -1,5 +1,5 @@
 ---
-title: "Um Girassol da Cor do Seu Cabelo — Lô Borges"
+title: "Um Girassol da Cor do Seu Cabelo (A Sunflower the Color of Your Hair) — Lô Borges"
 description: "Lô Borges — Um Girassol da Cor do Seu Cabelo, with synchronized Portuguese and English lyrics."
 slug: "um-girassol-da-cor-do-seu-cabelo"
 locale: "en"

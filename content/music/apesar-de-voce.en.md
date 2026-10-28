@@ -1,5 +1,5 @@
 ---
-title: "Apesar de Você — Chico Buarque"
+title: "Apesar de Você (In Spite of You) — Chico Buarque"
 description: "Chico Buarque — Apesar de Você, with synchronized Portuguese and English lyrics."
 slug: "apesar-de-voce"
 locale: "en"

@@ -1,5 +1,5 @@
 ---
-title: "Juízo Final"
+title: "Juízo Final (Last Judgment)"
 description: "Listen to Nelson Cavaquinho with synchronized Portuguese lyrics and an English translation."
 slug: "lyric-page-demo"
 locale: "en"

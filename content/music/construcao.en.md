@@ -1,5 +1,5 @@
 ---
-title: "Construção — Chico Buarque (1971)"
+title: "Construção (Construction) — Chico Buarque (1971)"
 description: "The first installment of a series on Brazilian music: Construção, its wordplay, and the worker at its centre."
 slug: "construcao"
 locale: "en"
