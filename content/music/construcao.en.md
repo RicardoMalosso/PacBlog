@@ -12,7 +12,7 @@ player:
     en: "lyrics/construcao/en.lrc"
     pt-br: "lyrics/construcao/pt-br.lrc"
 ---
-Hey! This is the first installment of my series on Brazilian music, where I'll be sharing some of my favorite songs from Brazil, along with a bit of their history and cultural context.
+This is the first installment of my series on Brazilian music, where I'll be sharing some of my favorite songs from Brazil, along with a bit of their history and cultural context.
 
 Today, we're talking about **Construção** (*Construction*) by [**Chico Buarque**](https://en.wikipedia.org/wiki/Chico_Buarque), a classic of *Música Popular Brasileira* (MPB), released in **1971**, during one of the most repressive periods of Brazil's military dictatorship.
 
@@ -53,7 +53,5 @@ What remains consistent is the central theme: **a worker dies, and to the world 
 What's particularly brilliant is *how* Chico tells this story. He repeats almost identical sentences, rearranging their final words so that the same events take on increasingly different, sometimes absurd meanings.
 
 And every single one of those final words is a proparoxytone.
-
-But enough talk, listen to this:
 
 <!-- lyrics-player -->
