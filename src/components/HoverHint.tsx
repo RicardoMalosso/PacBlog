@@ -9,16 +9,25 @@ export default function HoverHint() {
     let seen=false;
     setLeaving(false);
     let shown=false, frame=0, timer=0;
+    let lastScrollY=window.scrollY, scrollingDown=false;
     const update=()=>{
       frame=0;if(seen||!desktop.matches){if(!seen)setPosition(null);return;}
       const target=document.querySelector<HTMLElement>('article .post-note > button');
       if(!target)return;
       const rect=target.getBoundingClientRect(); const y=rect.top+rect.height/2;
-      if(!shown && y>=innerHeight*.35 && y<=innerHeight*.65)shown=true;
+      // Reveal only after downward scrolling carries the note 70% up the viewport.
+      if(!shown && scrollingDown && y>0 && y<=innerHeight*.3)shown=true;
+      scrollingDown=false;
       if(shown && y>0 && y<innerHeight)setPosition({x:Math.max(8,rect.left-142),y:y-48});
       else setPosition(null);
     };
     const schedule=()=>{if(!frame)frame=requestAnimationFrame(update);};
+    const onScroll=()=>{
+      const currentY=window.scrollY;
+      scrollingDown=currentY>lastScrollY;
+      lastScrollY=currentY;
+      schedule();
+    };
     const discovered=(event:Event)=>{
       if(seen||!(event.target instanceof Element)||!event.target.closest('article .post-note > button'))return;
       seen=true;
@@ -26,9 +35,9 @@ export default function HoverHint() {
     };
     document.addEventListener('pointerover',discovered,true);
     document.addEventListener('focusin',discovered,true);
-    window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);desktop.addEventListener('change',schedule);
+    window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',schedule);desktop.addEventListener('change',schedule);
     schedule();
-    return ()=>{cancelAnimationFrame(frame);clearTimeout(timer);document.removeEventListener('pointerover',discovered,true);document.removeEventListener('focusin',discovered,true);window.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);desktop.removeEventListener('change',schedule);};
+    return ()=>{cancelAnimationFrame(frame);clearTimeout(timer);document.removeEventListener('pointerover',discovered,true);document.removeEventListener('focusin',discovered,true);window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',schedule);desktop.removeEventListener('change',schedule);};
   },[]);
   return position ? <img className={`hover-hint ${leaving?'is-leaving':''}`} src={`${base}images/mouseover-hint.svg`} width={130} height={117} style={{left:position.x,top:position.y}} alt="" aria-hidden="true"/> : null;
 }
