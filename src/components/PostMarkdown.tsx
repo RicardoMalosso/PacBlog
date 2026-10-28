@@ -12,8 +12,8 @@ function Note({label,text}: {label:React.ReactNode;text:string}) {
 function Markdown({text,notes={}}: {text:string;notes?:Record<string,string>}) {
   return <ReactMarkdown remarkPlugins={[remarkGfm]} components={{a:({href,title,children})=>href && notes[href] ? <Note label={children} text={notes[href]}/> : href === '#note' && title ? <Note label={children} text={title}/> : <a href={href} title={title}>{children}</a>}}>{text}</ReactMarkdown>;
 }
-function Panel({title,body,notes}: {title:string;body:string;notes:Record<string,string>}) {
-  const {t}=useTranslation(); const [open,setOpen]=useState(true); const [large,setLarge]=useState(false);
+function Panel({title,body,notes,defaultOpen=true}: {title:string;body:string;notes:Record<string,string>;defaultOpen?:boolean}) {
+  const {t}=useTranslation(); const [open,setOpen]=useState(defaultOpen); const [large,setLarge]=useState(false);
   const id=useId(); const trigger=useRef<HTMLButtonElement>(null); const dialog=useRef<HTMLDivElement>(null);
   useEffect(()=>{
     if(!large)return;
@@ -41,8 +41,8 @@ export default function PostMarkdown({children}: {children:string}) {
   for(let i=0;i<lines.length;i++){
     const code=lines[i].match(/^\s*(`{3,}|~{3,})/);
     if(code){if(!fence)fence=code[1][0];else if(fence===code[1][0])fence='';}
-    const match=!fence&&lines[i].match(/^:::panel\s+(.+)$/);
-    if(match){const end=lines.findIndex((line,index)=>index>i&&line.trim()===':::');if(end>=0){flush();blocks.push(<Panel key={blocks.length} title={match[1]} notes={notes} body={lines.slice(i+1,end).join('\n')}/>);i=end;continue;}}
+    const match=!fence&&lines[i].match(/^:::panel(-collapsed)?\s+(.+)$/);
+    if(match){const end=lines.findIndex((line,index)=>index>i&&line.trim()===':::');if(end>=0){flush();blocks.push(<Panel key={blocks.length} title={match[2]} defaultOpen={!match[1]} notes={notes} body={lines.slice(i+1,end).join('\n')}/>);i=end;continue;}}
     normal.push(lines[i]);
   }
   flush();return <>{blocks}</>;

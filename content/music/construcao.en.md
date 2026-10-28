@@ -26,13 +26,11 @@ Examples from *Construção*:
 - **MÁ**-qui-na (*machine*)
 - **ÚL**-ti-mo (*last*)
 - **LÓ**-gi-co (*logical*)
-- **TRÁ**-fe-go (*traffic*)
-
-What's remarkable is that **every line of the song ends with a proparoxytone**, and Chico rearranges these words throughout the song, changing the meaning of otherwise nearly identical sentences.).
+- **TRÁ**-fe-go (*traffic*)).
 
 Besides being beautifully orchestrated, *Construção* is a remarkable piece of poetry. Written during the military dictatorship, it offers a devastating critique of the dehumanization of workers, using metaphor and intricate wordplay rather than directly confronting the government. This kind of indirect criticism was especially significant under the regime's strict [censorship](https://en.wikipedia.org/wiki/Institutional_Act_Number_Five).
 
-:::panel More about Brazil's military dictatorship
+:::panel-collapsed More about Brazil's military dictatorship
 
 Brazil was ruled by a military dictatorship from **1964 to 1985**, following a coup against President João Goulart.
 
@@ -47,8 +45,6 @@ It's against this background that *Construção* tells the story of a man buildi
 :::
 
 The song follows the final day of **a construction worker**, from leaving his family in the morning to falling to his death at work.
-
-Or, at least, that's one interpretation.
 
 Some listeners interpret its three sections as three different accounts of the same worker's death, or even as the stories of three different workers. The lyrics never explicitly settle the question.
 

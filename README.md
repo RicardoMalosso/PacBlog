@@ -151,3 +151,5 @@ A **Markdown** explanation with paragraphs and lists.
 ```
 
 Keep reference definitions outside fenced code blocks. Notes fade in on hover/focus and can be scrolled or opened by tapping. Everything works on GitHub Pages without a backend.
+
+Use `:::panel-collapsed Title` instead of `:::panel Title` for a section that starts collapsed. On desktop, a small supplied SVG hints at the first hover note once it reaches the middle 30% of the viewport. Hovering or focusing any note dismisses the hint and remembers that discovery in the visitor's browser.
