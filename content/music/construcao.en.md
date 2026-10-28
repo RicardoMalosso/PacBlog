@@ -12,13 +12,12 @@ player:
     en: "lyrics/construcao/en.lrc"
     pt-br: "lyrics/construcao/pt-br.lrc"
 ---
-This is the first installment of my series on Brazilian music, where I'll be sharing some of my favorite songs from Brazil, along with a bit of their history and cultural context.
 
-Today, we're talking about **Construção** (*Construction*) by [**Chico Buarque**](https://en.wikipedia.org/wiki/Chico_Buarque), a classic of *Música Popular Brasileira* (MPB), released in **1971**, during one of the most repressive periods of Brazil's military dictatorship.
+This is the first installment of my series on Brazilian music, where I'll be sharing some of my favorite songs from Brazil, along with their history and cultural context.
 
-In Brazil, it's common for teachers to use music and other familiar cultural references to make lessons more engaging and relatable to students, an approach that shares some principles with [Paulo Freire's educational philosophy](https://en.wikipedia.org/wiki/Paulo_Freire).
+We're starting with **Construção** (*Construction*), by [**Chico Buarque**](https://en.wikipedia.org/wiki/Chico_Buarque), released in **1971**. It follows a construction worker's final day through a combination of everyday details, unsettling images, and carefully arranged repetition.
 
-That's actually how I first encountered this song: in Portuguese class, while learning about [proparoxytones](# **Proparoxytones** are words whose stress falls on the **third-to-last syllable**. In Portuguese, all proparoxytones have a written accent.
+I first encountered it in Portuguese class, while learning about [proparoxytones](# **Proparoxytones** are words whose stress falls on the **third-to-last syllable**. In Portuguese, all proparoxytones have a written accent.
 
 Examples from *Construção*:
 
@@ -28,30 +27,42 @@ Examples from *Construção*:
 - **LÓ**-gi-co (*logical*)
 - **TRÁ**-fe-go (*traffic*)).
 
-Besides being beautifully orchestrated, *Construção* is a remarkable piece of poetry. Written during the military dictatorship, it offers a devastating critique of the dehumanization of workers, using metaphor and intricate wordplay rather than directly confronting the government. This kind of indirect criticism was especially significant under the regime's strict [censorship](https://en.wikipedia.org/wiki/Institutional_Act_Number_Five).
+Every line in the song's central narrative ends with one. That was our way into the song at school; here, it's a useful detail to keep in mind as you listen, especially when familiar words begin turning up in unexpected places.
+
+I've included the recording with Portuguese lyrics and an English translation below. We'll return to the wordplay and orchestration afterward. First, some context about the country in which the song was written.
 
 :::panel-collapsed More about Brazil's military dictatorship
 
-Brazil was ruled by a military dictatorship from **1964 to 1985**, following a coup against President João Goulart.
+Brazil was ruled by a [military dictatorship](https://en.wikipedia.org/wiki/Military_dictatorship_in_Brazil) from **1964 to 1985**, following the overthrow of President [João Goulart](https://en.wikipedia.org/wiki/Jo%C3%A3o_Goulart). The [coup](https://en.wikipedia.org/wiki/1964_Brazilian_coup_d%27%C3%A9tat) was carried out by the armed forces in conjunction with sections of the national bourgeoisie, including industrialists, bankers, landowners, and major media proprietors. These groups opposed Goulart's proposed reforms and the growing organization of workers and peasants.
 
-In December 1968, the regime introduced **Institutional Act No. 5 (AI-5)**, granting itself sweeping powers to suppress political opposition, suspend constitutional protections, close Congress, and intensify censorship.
+The United States backed the coup—as they are wont to do—and prepared military and logistical assistance through [**Operation Brother Sam**](https://en.wikipedia.org/wiki/Operation_Brother_Sam).
 
-The dictatorship persecuted political opponents through imprisonment, torture, murder, and enforced disappearance.
+The resulting regime is also called the [**ditadura empresarial-militar**](# Literally, **business–military dictatorship**. The term emphasizes that business owners and their organizations helped finance, promote, and sustain the dictatorship alongside the armed forces. It identifies the participation of sections of the Brazilian capitalist class, rather than treating the regime as the work of military officers alone. This does not mean every business owner supported it or that civilian and military participants exercised identical powers.).
 
-By 1971, Brazil was experiencing its so-called *Economic Miracle*, characterized by rapid economic growth, industrialization, and urban construction. But much of this growth depended on wage repression and the exploitation of workers, while wealth remained deeply concentrated.
+The dictatorship suppressed unions, restricted strikes, and persecuted communists, trade unionists, students, and other opponents through imprisonment, torture, murder, and enforced disappearance. [**Institutional Act No. 5 (AI-5)**](https://en.wikipedia.org/wiki/Institutional_Act_Number_Five), introduced in December 1968, expanded the regime's powers and intensified censorship.
 
-It's against this background that *Construção* tells the story of a man building the very prosperity from which he is excluded.
+This repression also operated across national borders. [**Operation Condor**](https://en.wikipedia.org/wiki/Operation_Condor), formally established in **1975**, coordinated surveillance, kidnapping, torture, and assassination among South American dictatorships. Brazil joined in 1976. U.S. officials knew about its operations, and a declassified diplomatic cable records the use of a U.S. communications installation in Panama to coordinate intelligence among participating services.
+
+Condor came after *Construção*, released in **1971**, but belonged to the same regional campaign against the left and organized labour.
+
+At the time of the song's release, Brazil was undergoing its so-called [*Economic Miracle*](https://en.wikipedia.org/wiki/Brazilian_Miracle): rapid industrial growth and major construction projects, supported by wage repression and restrictions on workers' organization. The resulting wealth remained highly concentrated.
+
+Construction workers supplied the labour for this expansion without sharing equally in its gains. That relationship provides the immediate social context for the song.
 
 :::
 
-The song follows the final day of **a construction worker**, from leaving his family in the morning to falling to his death at work.
-
-Some listeners interpret its three sections as three different accounts of the same worker's death, or even as the stories of three different workers. The lyrics never explicitly settle the question.
-
-What remains consistent is the central theme: **a worker dies, and to the world around him, his death is little more than an inconvenience.**
-
-What's particularly brilliant is *how* Chico tells this story. He repeats almost identical sentences, rearranging their final words so that the same events take on increasingly different, sometimes absurd meanings.
-
-And every single one of those final words is a proparoxytone.
-
 <!-- lyrics-player -->
+
+As you can hear, [Rogério Duprat's](https://en.wikipedia.org/wiki/Rog%C3%A9rio_Duprat) arrangement builds through repetition, dissonance, and accumulating layers of orchestral sound. To my ears, it evokes the mechanical pulse of a construction site and the noise pollution of a city continually being built: machinery, traffic, and people always in motion. The blaring brass can suggest car horns, even an ambulance siren. As the texture grows denser and more abrasive, the atmosphere becomes almost Kafkaesque—a city whose machinery keeps running, leaving its workers little room to rest.
+
+*Construção* brings that relationship down to the scale of one working day. Its protagonist has a family, bodily needs, and moments of pleasure. At work, his labour power is sold as a commodity, and his body becomes part of the machinery of construction. After his fall, he can no longer supply that labour power. Like a broken tool, he is discarded and replaced, his death registered only as an inconvenience.
+
+The repeated endings hammer this point home: traffic, the public, and Saturday must go on. In the society depicted here, workers' injuries and deaths are treated as routine costs of production—expected, normalized, and passed over.
+
+As with a car broken down in the middle of the road, the people passing by encounter an obstruction, briefly register the inconvenience, and move on. The grind doesn't stop.
+
+Chico develops this through repetition rather than a separate explanation. Words move between sentences, changing how the worker loves, eats, moves, and dies. The same vocabulary produces tenderness in one place and something mechanical or absurd in another.
+
+Some listeners hear the three sections as different accounts of the same death; others hear different workers passing through the same conditions. The lyrics leave room for either reading. In both, the repetition makes the worker's fate feel reproducible.
+
+For further reading on how the orchestration communicates meaning in this song, see Gil Jardim's [“Arrangement as the Structure and Fabric of Musical Discourse”](https://revistas.usp.br/revusp/pt_BR/article/view/127599) (in Portuguese).
