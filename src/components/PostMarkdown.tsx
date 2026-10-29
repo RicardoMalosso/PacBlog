@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
@@ -7,7 +7,44 @@ import { prepareNotes } from '../postNotes';
 
 function Note({label,text}: {label:React.ReactNode;text:string}) {
   const id = useId(); const [open,setOpen] = useState(false);
-  return <span className={`post-note ${open ? 'note-open' : ''}`} onKeyDown={e=>{if(e.key==='Escape')setOpen(false);}}><button type="button" aria-describedby={id} aria-expanded={open} onClick={()=>setOpen(x=>!x)} onBlur={()=>setOpen(false)}>{label}</button><span id={id} className="post-note-box" role="tooltip"><ReactMarkdown remarkPlugins={[remarkGfm]} components={{p:({children})=><span className="note-paragraph">{children}</span>,ul:({children})=><span role="list" className="note-list">{children}</span>,ol:({children})=><span role="list" className="note-list">{children}</span>,li:({children})=><span role="listitem" className="note-list-item">{children}</span>,h1:({children})=><span className="note-heading">{children}</span>,h2:({children})=><span className="note-heading">{children}</span>,h3:({children})=><span className="note-heading">{children}</span>}}>{text}</ReactMarkdown></span></span>;
+  const anchor = useRef<HTMLSpanElement>(null);
+  const box = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => {
+    const trigger = anchor.current!, tooltip = box.current!;
+    const position = () => {
+      const rect = trigger.getBoundingClientRect();
+      const viewport = window.visualViewport;
+      const margin = 12, gap = 6;
+      const left = (viewport?.offsetLeft ?? 0) + margin;
+      const top = (viewport?.offsetTop ?? 0) + margin;
+      const right = left + (viewport?.width ?? document.documentElement.clientWidth) - margin * 2;
+      const bottom = top + (viewport?.height ?? document.documentElement.clientHeight) - margin * 2;
+      const {width, height} = tooltip.getBoundingClientRect();
+      // Clamp against the visible viewport, including when the page is only partly scrolled.
+      // If a box is larger than the viewport, keep its beginning accessible.
+      tooltip.style.left = `${Math.max(left, Math.min(rect.left, right - width))}px`;
+      tooltip.style.top = `${Math.max(top, Math.min(rect.bottom + gap, bottom - height))}px`;
+    };
+    position();
+    trigger.addEventListener('mouseenter', position);
+    trigger.addEventListener('focusin', position);
+    window.addEventListener('scroll', position, true);
+    window.addEventListener('resize', position);
+    window.visualViewport?.addEventListener('resize', position);
+    window.visualViewport?.addEventListener('scroll', position);
+    const observer = new ResizeObserver(position);
+    observer.observe(tooltip);
+    return () => {
+      trigger.removeEventListener('mouseenter', position);
+      trigger.removeEventListener('focusin', position);
+      window.removeEventListener('scroll', position, true);
+      window.removeEventListener('resize', position);
+      window.visualViewport?.removeEventListener('resize', position);
+      window.visualViewport?.removeEventListener('scroll', position);
+      observer.disconnect();
+    };
+  }, [text]);
+  return <span ref={anchor} className={`post-note ${open ? 'note-open' : ''}`} onKeyDown={e=>{if(e.key==='Escape')setOpen(false);}}><button type="button" aria-describedby={id} aria-expanded={open} onClick={()=>setOpen(x=>!x)} onBlur={()=>setOpen(false)}>{label}</button><span ref={box} id={id} className="post-note-box" role="tooltip" style={{position:'fixed', bottom:'auto', transform:'none', zIndex:110}}><ReactMarkdown remarkPlugins={[remarkGfm]} components={{p:({children})=><span className="note-paragraph">{children}</span>,ul:({children})=><span role="list" className="note-list">{children}</span>,ol:({children})=><span role="list" className="note-list">{children}</span>,li:({children})=><span role="listitem" className="note-list-item">{children}</span>,h1:({children})=><span className="note-heading">{children}</span>,h2:({children})=><span className="note-heading">{children}</span>,h3:({children})=><span className="note-heading">{children}</span>}}>{text}</ReactMarkdown></span></span>;
 }
 function Markdown({text,notes={}}: {text:string;notes?:Record<string,string>}) {
   return <ReactMarkdown remarkPlugins={[remarkGfm]} components={{a:({href,title,children})=>href && notes[href] ? <Note label={children} text={notes[href]}/> : href === '#note' && title ? <Note label={children} text={title}/> : <a href={href} title={title}>{children}</a>}}>{text}</ReactMarkdown>;
