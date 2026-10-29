@@ -1,6 +1,6 @@
 ---
-title: "AK Do Guevara — MC Primitivo"
-description: "MC Primitivo — AK Do Guevara, with synchronized Portuguese and English lyrics."
+title: "AK Do Guevara (Guevara's AK) — MC Primitivo"
+description: "AK Do Guevara (Guevara's AK) — MC Primitivo, with synchronized Portuguese and English lyrics."
 locale: "en"
 slug: "ak-do-guevara"
 date: "2026-10-28"
