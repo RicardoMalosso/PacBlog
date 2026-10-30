@@ -130,6 +130,21 @@ test('music demo config links published subtitle files and localized post', () =
   }
 });
 
+test('per-song lyric sync defaults are configured in both Naquela Mesa locales', async () => {
+  const entries = loadContent();
+  const pages = entries.filter(x => x.section === 'music' && x.slug === 'naquela-mesa');
+  assert.equal(pages.length, 2);
+  for (const page of pages) {
+    assert.equal(page.player.offsetMs, 1000);
+    assert(fs.readFileSync(outputFor(`/${page.locale}/music/naquela-mesa/`), 'utf8').includes('Naquela Mesa'));
+  }
+  assert(entries.some(x => x.section === 'music' && x.slug !== 'naquela-mesa' && x.player && x.player.offsetMs === undefined));
+
+  const { lyricTime, videoTimeForLyric } = await import('../.ssr/entry-server.js');
+  assert.equal(lyricTime(9.16, 1000), 8.16);
+  assert.equal(videoTimeForLyric(8.16, 1000), 9.16);
+});
+
 test('YouTube URLs, LRC timing and duration-ranked matches', async () => {
   const { youtubeId, parseLrc, rankedTracks } = await import('../.ssr/entry-server.js');
   assert.equal(youtubeId('https://www.youtube.com/watch?v=lU8j7lj4RdU&t=5'), 'lU8j7lj4RdU');

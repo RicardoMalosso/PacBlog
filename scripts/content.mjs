@@ -29,6 +29,7 @@ export function loadContent(root = 'content') {
         } catch {}
         data.player.youtubeId = id;
         if (!/^[a-zA-Z0-9_-]{11}$/.test(id || '') || !validPath(data.player.subtitles?.en) || !validPath(data.player.subtitles?.['pt-br'])) throw Error(`${file}: invalid player configuration`);
+        if (data.player.offsetMs !== undefined && (!Number.isInteger(data.player.offsetMs) || Math.abs(data.player.offsetMs) > 60000)) throw Error(`${file}: player offsetMs must be an integer between -60000 and 60000`);
         for (const subtitle of Object.values(data.player.subtitles)) if (!fs.existsSync(path.join('public', subtitle))) throw Error(`${file}: missing subtitle ${subtitle}`);
       }
       if ((content.match(/<!-- lyrics-player -->/g) || []).length > 1) throw Error(`${file}: only one lyrics-player marker is supported`);

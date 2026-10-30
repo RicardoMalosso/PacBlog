@@ -67,7 +67,8 @@ Replace all placeholders. For Portuguese, localize title, description, body, and
 - Optional `credits: "Verified songwriting, performance, or translation credits."` displays plain text after the player/article.
 - `draft: true` excludes the page from publication. Both subtitle paths must exist, relative to `public/`, without a leading slash.
 - Use one player marker, outside panels/notes/code. Without it, the player follows the body. Existing controls and responsive styling apply automatically.
-- Legacy inline `lyrics` metadata is unnecessary for normal new posts. There are no supported per-post cover, offset, or player-layout fields; don't invent them.
+- Optional `player.offsetMs` sets the starting lyrics timing offset in milliseconds (integer, from -60000 to 60000; default `0`). Positive values display lyrics later than the video's playback, negative values earlier. Put it alongside `youtubeUrl` when a recording needs adjustment, in both locale posts (e.g. `offsetMs: 1000` delays the lyrics by one second). Viewers can still adjust timing manually; **Reset** restores this configured default. Do not modify LRC timestamps to achieve a per-recording sync adjustment.
+- Legacy inline `lyrics` metadata is unnecessary for normal new posts. There are no supported per-post cover or player-layout fields; don't invent them.
 
 ## Article formatting, only when needed
 

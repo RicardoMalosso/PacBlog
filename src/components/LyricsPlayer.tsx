@@ -20,7 +20,7 @@ function youtubeApi(): Promise<YTNamespace> {
   }).catch(error => { apiPromise = undefined; throw error; });
   return apiPromise!;
 }
-export type MusicPlayerConfig = { youtubeId: string; subtitles?: { en: string; 'pt-br': string }; lrc?: string; lyricLabel?: string };
+export type MusicPlayerConfig = { youtubeId: string; subtitles?: { en: string; 'pt-br': string }; lrc?: string; lyricLabel?: string; offsetMs?: number };
 export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { lyricNotes?: LyricNote[]; config: MusicPlayerConfig; onDuration?: (duration: number) => void }) {
   const annotated = (text: string, start: number, language: 'en' | 'pt-br') => {
     const notes = lyricNotes.filter(n => n.language === language && Math.abs(n.time.split(':').reduce((a, v) => a * 60 + Number(v), 0) - start) < 0.005);
@@ -113,7 +113,9 @@ export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { 
   const [expanded, setExpanded] = useState(true); const [following, setFollowing] = useState(true);
   const [scrubbing, setScrubbing] = useState(false); const [scrubTime, setScrubTime] = useState(0);
   const [scriptMessage, setScriptMessage] = useState(false);
-  const [offsetMs, setOffsetMs] = useState(0);
+  const defaultOffsetMs = config.offsetMs ?? 0;
+  const [offsetMs, setOffsetMs] = useState(defaultOffsetMs);
+  useEffect(() => { setOffsetMs(defaultOffsetMs); }, [defaultOffsetMs, config.youtubeId]);
 
   useEffect(() => {
     const controller = new AbortController(); setRows([]); setLoadError('');
@@ -238,7 +240,7 @@ export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { 
       <button type="button" onClick={() => setOffsetMs(value => value + 100)}>{t('lyricsEarly')}</button>
       <button type="button" onClick={() => setOffsetMs(value => value - 100)}>{t('lyricsLate')}</button>
       <output className="mono" aria-label={t('syncOffset')} aria-live="polite">{offsetMs > 0 ? '+' : ''}{offsetMs} ms</output>
-      {offsetMs !== 0 && <button type="button" onClick={() => setOffsetMs(0)}>{t('syncReset')}</button>}
+      {offsetMs !== defaultOffsetMs && <button type="button" onClick={() => setOffsetMs(defaultOffsetMs)}>{t('syncReset')}</button>}
     </div>
     <p className="player-caption">{t('keyboardHelp')} <button className="inline-button" onClick={() => setScriptMessage(x => !x)} aria-expanded={scriptMessage}>{t('keyboardDetails')}</button></p>
     {scriptMessage && <p className="player-caption">{t('keyboardExplanation')}</p>}

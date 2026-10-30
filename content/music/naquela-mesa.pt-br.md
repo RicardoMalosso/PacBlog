@@ -10,6 +10,7 @@ artist: "Nelson Gonçalves"
 originalLanguage: "pt-BR"
 player:
   youtubeUrl: "https://www.youtube.com/watch?v=ePW8z08IfdQ"
+  offsetMs: 1000
   subtitles:
     en: "lyrics/naquela-mesa/en.lrc"
     pt-br: "lyrics/naquela-mesa/pt-br.lrc"
