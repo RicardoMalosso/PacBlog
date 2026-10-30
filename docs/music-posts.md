@@ -109,3 +109,5 @@ Images belong in `public/images/`, referenced as `![Useful alt text](/PacBlog/im
 Run `npm run build` then `npm test` with dependencies installed. Check both requested routes, titles, lyric languages/timing, and any formatting used. Inspect the diff for placeholders and unrelated edits. Do not modify player code for ordinary content additions.
 
 During development, run `npm run content` or restart `npm run dev` after Markdown edits. Never edit generated JSON or `dist/` directly. Commit source Markdown and lyrics; follow the user's publishing instructions. Summarize changed pages and checks briefly.
+
+Optional lyric mouseovers: add a top-level `lyricNotes` array with `time: "00:24.57"`, `language: "en"` (or `pt-br`), exact `text: "Eating"`, and `explanation: "Your note"`. Use the original LRC timestamp. Repeat in each localized post; keep multiple notes on a cue in text order. LRC files remain plain text.

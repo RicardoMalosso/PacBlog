@@ -15,6 +15,7 @@ export function loadContent(root = 'content') {
       if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(data.slug)) throw Error(`${file}: invalid slug`);
       if (!/^\d{4}-\d{2}-\d{2}$/.test(data.date) || Number.isNaN(Date.parse(data.date))) throw Error(`${file}: invalid date`);
       if (data.tags && (!Array.isArray(data.tags) || data.tags.some(x => typeof x !== 'string'))) throw Error(`${file}: tags must be strings`);
+      if (data.lyricNotes && (!Array.isArray(data.lyricNotes) || data.lyricNotes.some(n => !n || !/^\d{2}:[0-5]\d(?:\.\d{1,3})?$/.test(n.time) || !['en', 'pt-br'].includes(n.language) || typeof n.text !== 'string' || !n.text.trim() || typeof n.explanation !== 'string' || !n.explanation.trim()))) throw Error(`${file}: invalid lyricNotes`);
       if (data.player) {
         const validPath = value => typeof value === 'string' && /^lyrics\/(?:[a-z0-9-]+\/)*[a-z0-9-]+\.lrc$/.test(value);
         let id;

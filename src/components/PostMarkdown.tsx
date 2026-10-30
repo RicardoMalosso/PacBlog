@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { prepareNotes } from '../postNotes';
 
-function Note({label,text}: {label:React.ReactNode;text:string}) {
+export function Note({label,text}: {label:React.ReactNode;text:string}) {
   const id = useId(); const [open,setOpen] = useState(false);
   const anchor = useRef<HTMLSpanElement>(null);
   const box = useRef<HTMLSpanElement>(null);

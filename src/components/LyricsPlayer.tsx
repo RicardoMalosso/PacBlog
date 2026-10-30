@@ -1,3 +1,5 @@
+import { Note } from './PostMarkdown';
+import type { LyricNote } from '../types';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { base } from '../data';
@@ -19,7 +21,18 @@ function youtubeApi(): Promise<YTNamespace> {
   return apiPromise!;
 }
 export type MusicPlayerConfig = { youtubeId: string; subtitles?: { en: string; 'pt-br': string }; lrc?: string; lyricLabel?: string };
-export default function LyricsPlayer({ config, onDuration }: { config: MusicPlayerConfig; onDuration?: (duration: number) => void }) {
+export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { lyricNotes?: LyricNote[]; config: MusicPlayerConfig; onDuration?: (duration: number) => void }) {
+  const annotated = (text: string, start: number, language: 'en' | 'pt-br') => {
+    const notes = lyricNotes.filter(n => n.language === language && Math.abs(n.time.split(':').reduce((a, v) => a * 60 + Number(v), 0) - start) < 0.005);
+    const parts: React.ReactNode[] = []; let cursor = 0;
+    for (const note of notes) {
+      const at = text.indexOf(note.text, cursor);
+      if (at < 0) continue;
+      parts.push(text.slice(cursor, at), <span key={at} onClick={e => e.stopPropagation()} onKeyDown={e => e.stopPropagation()}><Note label={note.text} text={note.explanation}/></span>);
+      cursor = at + note.text.length;
+    }
+    parts.push(text.slice(cursor)); return parts;
+  };
   const { t } = useTranslation();
   const mount = useRef<HTMLDivElement>(null); const player = useRef<Player | null>(null); const lyricsRef = useRef<HTMLDivElement>(null); const lyricsHeader = useRef<HTMLDivElement>(null); const started = useRef(false); const volumeLockUntil = useRef(0);
   const [rows, setRows] = useState<LyricRow[]>([]); const [loadError, setLoadError] = useState('');
@@ -134,7 +147,7 @@ export default function LyricsPlayer({ config, onDuration }: { config: MusicPlay
     <div ref={lyricsHeader} className="lyric-controls"><div className="lyric-column-headings"><span>{t('timestamp')}</span>{config.lrc !== undefined ? <><span></span><span>{config.lyricLabel || t('lyricsPlayer')}</span></> : <><span>🇨🇦 English</span><span>🇧🇷 Português</span></>}</div>{expanded && !following && <button onClick={() => setFollowing(true)}>{t('followLine')}</button>}</div>
     {loadError && <p className="notice" role="status">{t(loadError)}</p>}
     <div ref={lyricsRef} className={`synced-lyrics ${expanded ? 'is-expanded' : 'is-compact'}`} onWheel={stopFollowing} onTouchMove={stopFollowing} onKeyDown={e => {if (['PageUp','PageDown','Home','End'].includes(e.key)) stopFollowing();}} tabIndex={expanded ? 0 : undefined} aria-label={t('lyricsPlayer')}>
-      <span aria-hidden="true" className="lyric-highlight" style={highlight ? { transform: `translateY(${highlight.top}px)`, height: highlight.height, opacity: 1 } : { opacity: 0 }}/>{displayed.map(({row, index}) => <button type="button" className={`sync-row ${current === index ? 'is-current' : ''}`} data-current={current === index} key={`${row.start}-${index}`} onClick={() => {seek(videoTimeForLyric(row.start, offsetMs));setFollowing(true);}} aria-label={`${formatTime(videoTimeForLyric(row.start, offsetMs))} ${row.en?.text || ''} ${row.pt?.text || ''}`}><span className="sync-time mono">{formatTime(videoTimeForLyric(row.start, offsetMs))}</span><span className="sync-en" lang="en">{row.en?.text || ''}</span><span className="sync-pt" lang={config.lrc !== undefined ? undefined : "pt-BR"}>{row.pt?.text || ''}</span></button>)}
+      <span aria-hidden="true" className="lyric-highlight" style={highlight ? { transform: `translateY(${highlight.top}px)`, height: highlight.height, opacity: 1 } : { opacity: 0 }}/>{displayed.map(({row, index}) => <div role="button" tabIndex={0} onKeyDown={e => {if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {e.preventDefault(); e.stopPropagation(); seek(videoTimeForLyric(row.start, offsetMs));setFollowing(true);}}} className={`sync-row ${current === index ? 'is-current' : ''}`} data-current={current === index} key={`${row.start}-${index}`} onClick={() => {seek(videoTimeForLyric(row.start, offsetMs));setFollowing(true);}} aria-label={`${formatTime(videoTimeForLyric(row.start, offsetMs))} ${row.en?.text || ''} ${row.pt?.text || ''}`}><span className="sync-time mono">{formatTime(videoTimeForLyric(row.start, offsetMs))}</span><span className="sync-en" lang="en">{annotated(row.en?.text || '', row.en?.start ?? row.start, 'en')}</span><span className="sync-pt" lang={config.lrc !== undefined ? undefined : "pt-BR"}>{annotated(row.pt?.text || '', row.pt?.start ?? row.start, 'pt-br')}</span></div>)}
       {!rows.length && !loadError && <p className="player-status">{t(config.lrc !== undefined ? 'chooseSyncedLyrics' : 'loadingLyrics')}</p>}
     </div>
     <div className="lyrics-sync" role="group" aria-label={t('syncPrompt')}>
