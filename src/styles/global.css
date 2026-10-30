@@ -2197,3 +2197,16 @@ main:focus {
 .sync-row:has(.post-note.note-open) {
     z-index: 2;
 }
+
+/* Fullscreen the video wrapper so synchronized lyrics share its top layer. */
+.youtube-shell { position: relative; }
+.lyrics-fullscreen-button { position: absolute; top: 8px; right: 8px; z-index: 3; padding: 6px 10px; background: #151515e8; color: #fff; border: 1px solid #aaa; border-radius: 4px; font-size: 12px; cursor: pointer; }
+.youtube-shell:fullscreen { width: 100vw; height: 100vh; max-width: none; aspect-ratio: auto; background: #000; border: 0; border-radius: 0; }
+.youtube-shell:fullscreen .youtube-mount,
+.youtube-shell:fullscreen iframe { width: 100%; height: 100%; position: absolute; inset: 0; }
+.fullscreen-lyrics { position: absolute; bottom: max(70px, env(safe-area-inset-bottom)); left: 5%; right: 5%; z-index: 2; pointer-events: none; display: grid; gap: 5px; max-height: 45vh; overflow: hidden; text-align: center; color: #fff; font-size: clamp(14px, 2.1vw, 32px); line-height: 1.3; text-shadow: 0 2px 3px #000; }
+.fullscreen-lyric { display: flex; justify-content: center; gap: 24px; padding: 4px 10px; background: #000b; border-radius: 5px; color: #d6d6d6; }
+.fullscreen-lyric span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.fullscreen-lyric.is-current { color: #fff; background: #000e; font-weight: 700; box-shadow: inset 3px 0 #fabd2f; }
+.fullscreen-error { position: absolute; top: 45px; left: 10px; right: 10px; z-index: 4; background: #222; color: #fff; padding: 8px; }
+@media (max-height: 500px) { .fullscreen-lyrics { bottom: 50px; font-size: 14px; gap: 2px; max-height: 55vh; } .fullscreen-lyric { padding: 2px 6px; } }

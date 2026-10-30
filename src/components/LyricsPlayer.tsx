@@ -33,7 +33,30 @@ export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { 
     }
     parts.push(text.slice(cursor)); return parts;
   };
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const videoShell = useRef<HTMLDivElement>(null);
+  const fullscreenButton = useRef<HTMLButtonElement>(null);
+  const [fullscreen, setFullscreen] = useState(false);
+  const [fullscreenError, setFullscreenError] = useState(false);
+  const ptLocale = i18n.language.toLowerCase().startsWith('pt');
+  const fullscreenLabel = fullscreen ? (ptLocale ? 'Sair da tela cheia' : 'Exit fullscreen') : (ptLocale ? 'Tela cheia com letras' : 'Fullscreen with lyrics');
+  useEffect(() => {
+    const changed = () => {
+      const active = document.fullscreenElement === videoShell.current;
+      setFullscreen(active);
+      if (!active) fullscreenButton.current?.focus({preventScroll: true});
+    };
+    document.addEventListener('fullscreenchange', changed);
+    return () => document.removeEventListener('fullscreenchange', changed);
+  }, []);
+  const toggleFullscreen = async () => {
+    setFullscreenError(false);
+    try {
+      if (document.fullscreenElement === videoShell.current) await document.exitFullscreen();
+      else if (videoShell.current?.requestFullscreen) await videoShell.current.requestFullscreen();
+      else setFullscreenError(true);
+    } catch { setFullscreenError(true); }
+  };
   const mount = useRef<HTMLDivElement>(null); const player = useRef<Player | null>(null); const lyricsRef = useRef<HTMLDivElement>(null); const lyricsHeader = useRef<HTMLDivElement>(null); const started = useRef(false); const volumeLockUntil = useRef(0);
   const [rows, setRows] = useState<LyricRow[]>([]); const [loadError, setLoadError] = useState('');
   const [playerError, setPlayerError] = useState(false); const [ready, setReady] = useState(false);
@@ -73,13 +96,13 @@ export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { 
       if (cancelled || !mount.current) return;
       const node = document.createElement('div'); mount.current.replaceChildren(node);
       instance = new YT.Player(node, {
-        videoId: config.youtubeId, playerVars: { playsinline: 1, origin: window.location.origin },
+        videoId: config.youtubeId, playerVars: { playsinline: 1, fs: 0, origin: window.location.origin },
         events: {
           onReady: () => { if (!cancelled) setReady(true); },
           onStateChange: (event: { data: number }) => {
             if (cancelled) return;
             setPlaying(event.data === 1);
-            if (event.data === 1 && !started.current) { started.current = true; lyricsHeader.current?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); }
+            if (event.data === 1 && !started.current) { started.current = true; if (document.fullscreenElement !== videoShell.current) lyricsHeader.current?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); }
           },
           onError: () => { if (!cancelled) setPlayerError(true); },
         },
@@ -107,7 +130,7 @@ export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { 
   useEffect(() => {
     const key = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
-      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.repeat || target?.isContentEditable || ['INPUT','TEXTAREA','SELECT'].includes(target?.tagName || '')) return;
+      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.repeat || target?.isContentEditable || ['INPUT','TEXTAREA','SELECT','BUTTON'].includes(target?.tagName || '')) return;
       const k = e.key.toLowerCase();
       if (![' ', 'arrowleft', 'arrowright', 'h', 'j', 'k', 'l'].includes(k)) return;
       e.preventDefault();
@@ -141,7 +164,16 @@ export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { 
   return <section className="music-player" aria-label={t('lyricsPlayer')}>
     <div className="music-player-header"><div><p className="eyebrow">{t('listenRead')}</p><h2>{t('lyricsPlayer')}</h2></div><div className="player-actions"><button onClick={() => {setExpanded(x => !x); setFollowing(true);}} aria-expanded={expanded}>{t(expanded ? 'compactLyrics' : 'expandLyrics')}</button></div></div>
     <div className="player-layout">
-      <div className="youtube-shell"><div ref={mount} className="youtube-mount"/><noscript><a href={`https://www.youtube.com/watch?v=${config.youtubeId}`}>{t('watchOnYoutube')} ↗</a></noscript>{playerError && <p className="player-error">{t('videoError')} <a href={`https://www.youtube.com/watch?v=${config.youtubeId}`}>{t('watchOnYoutube')} ↗</a></p>}</div>
+      <div ref={videoShell} className="youtube-shell"><div ref={mount} className="youtube-mount"/>
+        <button ref={fullscreenButton} className="lyrics-fullscreen-button" type="button" onClick={toggleFullscreen} aria-label={fullscreenLabel} aria-pressed={fullscreen}>{fullscreen ? '⤡' : '⤢'} {fullscreenLabel}</button>
+        {fullscreenError && <p className="fullscreen-error" role="status">{ptLocale ? 'Tela cheia indisponível neste navegador.' : 'Fullscreen is unavailable in this browser.'}</p>}
+        {fullscreen && <div className="fullscreen-lyrics" aria-label={t('lyricsPlayer')}>
+          {rows.slice(Math.max(0, center - 1), center + 2).map((row) => <div key={row.start} className={rows[current] === row ? 'fullscreen-lyric is-current' : 'fullscreen-lyric'}>
+            {config.lrc === undefined && <span lang="en">{row.en?.text || ''}</span>}
+            <span lang={config.lrc === undefined ? 'pt-BR' : undefined}>{row.pt?.text || ''}</span>
+          </div>)}
+          {loadError && <p role="status">{t(loadError)}</p>}
+        </div>}<noscript><a href={`https://www.youtube.com/watch?v=${config.youtubeId}`}>{t('watchOnYoutube')} ↗</a></noscript>{playerError && <p className="player-error">{t('videoError')} <a href={`https://www.youtube.com/watch?v=${config.youtubeId}`}>{t('watchOnYoutube')} ↗</a></p>}</div>
       <div className="music-controls"><div className="control-top"><button className="play-control" onClick={toggle} disabled={!ready || playerError} aria-label={t(playing ? 'pauseAudio' : 'playAudio')}>{playing ? 'Ⅱ' : '▶'}</button><div><strong>{t('videoPlayback')}</strong><p>{t('keyboardHelp')}</p></div></div><label className="sr-only" htmlFor="music-seek">{t('seek')}</label><input id="music-seek" className="music-seek" type="range" min={0} max={duration || 0} step="0.1" disabled={!ready || !duration} value={Math.min(shownTime, duration || 0)} onPointerDown={() => {setScrubTime(time);setScrubbing(true);}} onChange={e => { const value = Number(e.target.value); setScrubTime(value); if (!scrubbing) seek(value); }} onPointerUp={e => { seek(Number(e.currentTarget.value));setScrubbing(false); }} onPointerCancel={() => setScrubbing(false)}/><div className="player-times mono"><span>{formatTime(shownTime)}</span><span>{formatTime(duration)}</span></div><div className="volume-controls"><button type="button" className="volume-mute" onClick={toggleMute} disabled={!ready || playerError} aria-label={t(muted || volume === 0 ? 'unmute' : 'mute')} aria-pressed={muted || volume === 0}>{muted || volume === 0 ? '🔇' : '🔊'}</button><label htmlFor="music-volume">{t('volume')}</label><input id="music-volume" type="range" min={0} max={100} step={1} value={muted ? 0 : volume} disabled={!ready || playerError} onChange={e => changeVolume(Number(e.target.value))}/><span className="mono">{muted ? 0 : volume}%</span></div>{!ready && !playerError && <p className="player-status">{t('loadingPlayer')}</p>}</div>
     </div>
     <div ref={lyricsHeader} className="lyric-controls"><div className="lyric-column-headings"><span>{t('timestamp')}</span>{config.lrc !== undefined ? <><span></span><span>{config.lyricLabel || t('lyricsPlayer')}</span></> : <><span>🇨🇦 English</span><span>🇧🇷 Português</span></>}</div>{expanded && !following && <button onClick={() => setFollowing(true)}>{t('followLine')}</button>}</div>
