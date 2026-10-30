@@ -19,8 +19,6 @@ player:
     en: "lyrics/o-mundo-e-um-moinho/en.lrc"
     pt-br: "lyrics/o-mundo-e-um-moinho/pt-br.lrc"
 ---
-*O Mundo É um Moinho*, de Cartola, com letra original sincronizada e tradução em inglês. Para saber mais sobre sua escrita, leia o [artigo de Luiz Ricardo Leitão (2020)](https://www.brasildefato.com.br/2020/10/09/artigo-o-mundo-e-um-moinho-as-reverencias-ao-talento-e-a-lucidez-do-mestre-cartola/).
-
 Cartola foi um dos maiores gênios musicais que o Brasil já produziu e passou grande parte da vida na pobreza.
 
 Ele ajudou a fundar uma das escolas de samba mais importantes do Brasil e compôs canções de extraordinária sofisticação poética enquanto trabalhava como pedreiro e lavava carros para sobreviver, lutando para pagar as contas.
@@ -28,3 +26,5 @@ Ele ajudou a fundar uma das escolas de samba mais importantes do Brasil e compô
 Ele tinha **65 anos quando gravou seu primeiro álbum solo**. Morreu apenas seis anos depois, em 1980.
 
 <!-- lyrics-player -->
+
+*O Mundo É um Moinho*, de Cartola, com letra original sincronizada e tradução em inglês. Para saber mais sobre sua escrita, leia o [artigo de Luiz Ricardo Leitão (2020)](https://www.brasildefato.com.br/2020/10/09/artigo-o-mundo-e-um-moinho-as-reverencias-ao-talento-e-a-lucidez-do-mestre-cartola/).
