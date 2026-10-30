@@ -61,13 +61,14 @@ export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { 
   // Only resume playback when the first hovered explanation actually paused a playing video.
   // Count open explanations so moving between overlapping tooltips does not resume prematurely.
   const notePlayback = useRef({open: 0, resume: false});
+  const [pauseOnLyricHover, setPauseOnLyricHover] = useState(false);
   const onLyricNoteOpenChange = (open: boolean) => {
     const state = notePlayback.current;
     const video = player.current;
     if (open) {
       if (state.open++ > 0) return;
       state.resume = false;
-      if (!video) return;
+      if (!pauseOnLyricHover || !video) return;
       try {
         if (video.getPlayerState() === 1) {
           state.resume = true;
@@ -81,6 +82,27 @@ export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { 
     state.resume = false;
     if (shouldResume && video) {
       try { if (video.getPlayerState() === 2) video.playVideo(); } catch { /* player no longer ready */ }
+    }
+  };
+  const changePauseOnLyricHover = (enabled: boolean) => {
+    setPauseOnLyricHover(enabled);
+    const state = notePlayback.current;
+    const video = player.current;
+    if (!enabled) {
+      // Switching the option off cancels auto-pause and restores only playback we paused.
+      const shouldResume = state.resume;
+      state.resume = false;
+      if (shouldResume && video) {
+        try { if (video.getPlayerState() === 2) video.playVideo(); } catch { /* player no longer ready */ }
+      }
+    } else if (state.open > 0 && video) {
+      // Turning it on with an explanation already open applies the same rule.
+      try {
+        if (video.getPlayerState() === 1) {
+          state.resume = true;
+          video.pauseVideo();
+        }
+      } catch { state.resume = false; }
     }
   };
   const [rows, setRows] = useState<LyricRow[]>([]); const [loadError, setLoadError] = useState('');
@@ -201,7 +223,9 @@ export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { 
           </div>)}
           {loadError && <p role="status">{t(loadError)}</p>}
         </div>}<noscript><a href={`https://www.youtube.com/watch?v=${config.youtubeId}`}>{t('watchOnYoutube')} ↗</a></noscript>{playerError && <p className="player-error">{t('videoError')} <a href={`https://www.youtube.com/watch?v=${config.youtubeId}`}>{t('watchOnYoutube')} ↗</a></p>}</div>
-      <div className="music-controls"><div className="control-top"><button className="play-control" onClick={toggle} disabled={!ready || playerError} aria-label={t(playing ? 'pauseAudio' : 'playAudio')}>{playing ? 'Ⅱ' : '▶'}</button><div><strong>{t('videoPlayback')}</strong><p>{t('keyboardHelp')}</p></div></div><label className="sr-only" htmlFor="music-seek">{t('seek')}</label><input id="music-seek" className="music-seek" type="range" min={0} max={duration || 0} step="0.1" disabled={!ready || !duration} value={Math.min(shownTime, duration || 0)} onPointerDown={() => {setScrubTime(time);setScrubbing(true);}} onChange={e => { const value = Number(e.target.value); setScrubTime(value); if (!scrubbing) seek(value); }} onPointerUp={e => { seek(Number(e.currentTarget.value));setScrubbing(false); }} onPointerCancel={() => setScrubbing(false)}/><div className="player-times mono"><span>{formatTime(shownTime)}</span><span>{formatTime(duration)}</span></div><div className="volume-controls"><button type="button" className="volume-mute" onClick={toggleMute} disabled={!ready || playerError} aria-label={t(muted || volume === 0 ? 'unmute' : 'mute')} aria-pressed={muted || volume === 0}>{muted || volume === 0 ? '🔇' : '🔊'}</button><label htmlFor="music-volume">{t('volume')}</label><input id="music-volume" type="range" min={0} max={100} step={1} value={muted ? 0 : volume} disabled={!ready || playerError} onChange={e => changeVolume(Number(e.target.value))}/><span className="mono">{muted ? 0 : volume}%</span></div>{!ready && !playerError && <p className="player-status">{t('loadingPlayer')}</p>}</div>
+      <div className="music-controls"><div className="control-top"><button className="play-control" onClick={toggle} disabled={!ready || playerError} aria-label={t(playing ? 'pauseAudio' : 'playAudio')}>{playing ? 'Ⅱ' : '▶'}</button><div><strong>{t('videoPlayback')}</strong><p>{t('keyboardHelp')}</p></div></div><label className="sr-only" htmlFor="music-seek">{t('seek')}</label><input id="music-seek" className="music-seek" type="range" min={0} max={duration || 0} step="0.1" disabled={!ready || !duration} value={Math.min(shownTime, duration || 0)} onPointerDown={() => {setScrubTime(time);setScrubbing(true);}} onChange={e => { const value = Number(e.target.value); setScrubTime(value); if (!scrubbing) seek(value); }} onPointerUp={e => { seek(Number(e.currentTarget.value));setScrubbing(false); }} onPointerCancel={() => setScrubbing(false)}/><div className="player-times mono"><span>{formatTime(shownTime)}</span><span>{formatTime(duration)}</span></div><div className="volume-controls"><button type="button" className="volume-mute" onClick={toggleMute} disabled={!ready || playerError} aria-label={t(muted || volume === 0 ? 'unmute' : 'mute')} aria-pressed={muted || volume === 0}>{muted || volume === 0 ? '🔇' : '🔊'}</button><label htmlFor="music-volume">{t('volume')}</label><input id="music-volume" type="range" min={0} max={100} step={1} value={muted ? 0 : volume} disabled={!ready || playerError} onChange={e => changeVolume(Number(e.target.value))}/><span className="mono">{muted ? 0 : volume}%</span></div>
+        <label className="pause-on-hover-toggle"><input type="checkbox" checked={pauseOnLyricHover} onChange={e => changePauseOnLyricHover(e.target.checked)}/>{t('pauseOnLyricHover')}</label>
+        {!ready && !playerError && <p className="player-status">{t('loadingPlayer')}</p>}</div>
     </div>
     <div ref={lyricsHeader} className="lyric-controls"><div className="lyric-column-headings"><span>{t('timestamp')}</span>{config.lrc !== undefined ? <><span></span><span>{config.lyricLabel || t('lyricsPlayer')}</span></> : <><span>🇨🇦 English</span><span>🇧🇷 Português</span></>}</div>{expanded && !following && <button onClick={() => setFollowing(true)}>{t('followLine')}</button>}</div>
     {loadError && <p className="notice" role="status">{t(loadError)}</p>}

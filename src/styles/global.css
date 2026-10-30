@@ -1701,6 +1701,25 @@ main:focus {
     font-size: 11px
 }
 
+.pause-on-hover-toggle {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: fit-content;
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer
+}
+
+.pause-on-hover-toggle input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--accent);
+    cursor: pointer
+}
+
 .volume-mute {
     border: 1px solid var(--line);
     border-radius: 4px;
