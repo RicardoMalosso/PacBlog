@@ -8,7 +8,7 @@ tags: ["MPB", "Lyrics"]
 artist: "Chico Buarque"
 originalLanguage: "pt-BR"
 player:
-  youtubeUrl: "https://www.youtube.com/watch?v=nBvCjylKLfg"
+  youtubeUrl: "https://www.youtube.com/watch?v=dHYOVuq_Fco"
   subtitles:
     en: "lyrics/cotidiano/en.lrc"
     pt-br: "lyrics/cotidiano/pt-br.lrc"
