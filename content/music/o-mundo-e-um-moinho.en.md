@@ -21,4 +21,10 @@ player:
 ---
 Cartola's *O Mundo É um Moinho*, with synchronized Portuguese lyrics and an English translation. For more on his writing, see [Luiz Ricardo Leitão's 2020 article on Cartola](https://www.brasildefato.com.br/2020/10/09/artigo-o-mundo-e-um-moinho-as-reverencias-ao-talento-e-a-lucidez-do-mestre-cartola/).
 
+Cartola was one of the greatest musical geniuses Brazil has ever produced, and he spent much of his life in poverty.
+
+He helped found one of Brazil's most important samba schools, and composed songs of extraordinary poetic sophistication, while working as a bricklayer, and washing cars for a living, struggling to make ends meet.
+
+He was **65 years old when he recorded his first solo album**. He died just six years later, in 1980.
+
 <!-- lyrics-player -->
