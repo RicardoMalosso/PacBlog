@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { base } from '../data';
 
+// Only post-body explanations should trigger or dismiss the SVG hint.
+// Synchronized lyric annotations live inside .music-player, outside .prose.
+const bodyNoteSelector = 'article .prose .post-note > button';
+
 export default function HoverHint() {
   const [position,setPosition]=useState<{x:number;y:number}|null>(null);
   const [leaving,setLeaving]=useState(false);
@@ -12,7 +16,7 @@ export default function HoverHint() {
     let lastScrollY=window.scrollY, scrollingDown=false;
     const update=()=>{
       frame=0;if(seen||!desktop.matches){if(!seen)setPosition(null);return;}
-      const target=document.querySelector<HTMLElement>('article .post-note > button');
+      const target=document.querySelector<HTMLElement>(bodyNoteSelector);
       if(!target)return;
       const rect=target.getBoundingClientRect(); const y=rect.top+rect.height/2;
       // Reveal only after downward scrolling carries the note 70% up the viewport.
@@ -29,7 +33,7 @@ export default function HoverHint() {
       schedule();
     };
     const discovered=(event:Event)=>{
-      if(seen||!(event.target instanceof Element)||!event.target.closest('article .post-note > button'))return;
+      if(seen||!(event.target instanceof Element)||!event.target.closest(bodyNoteSelector))return;
       seen=true;
       setLeaving(true);timer=window.setTimeout(()=>setPosition(null),450);
     };
