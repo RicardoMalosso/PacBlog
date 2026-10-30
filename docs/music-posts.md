@@ -1,0 +1,111 @@
+# Adding a music post
+
+Use this recipe for “create a new post for this YouTube video”. Read this guide once; it contains the template and supported syntax. Read one existing post only if needed: `cais.en.md` for a minimal page or `construcao.en.md` for article formatting, both under `content/music/`. Read implementation files (`.ts`, `.tsx`, `.mjs`) only to diagnose a failure or implement new behavior. Avoid repeated repository scans and unrelated research.
+
+## Inputs and defaults
+
+- **YouTube link only:** identify artist, song title, and duration; fetch synchronized lyrics from LRCLIB; translate to the other language; create the page.
+- **Link + one LRC:** preserve it and translate its text, keeping timestamps identical.
+- **Link + both LRCs:** use them directly after checking their language and alignment.
+- **Article supplied:** use it as the body. Otherwise write just one explanatory sentence and the player—no invented essay or personal experiences.
+
+Default to English and Portuguese pages unless a specific locale is requested. Both pages use the same two LRC files. English titles must include both original and translated titles: `Construção (Construction) — Chico Buarque`. For an English original, include its Portuguese title translation. Preserve existing slugs and dates when updating a post.
+
+## Fetch missing lyrics
+
+Identify the song from the actual YouTube recording; the uploader is not necessarily the artist. Normalize its URL to `https://www.youtube.com/watch?v=VIDEO_ID`.
+
+Query LRCLIB with URL-encoded values:
+
+```text
+https://lrclib.net/api/get?artist_name=ARTIST&track_name=TITLE&duration=SECONDS
+```
+
+If no suitable result is returned, search:
+
+```text
+https://lrclib.net/api/search?track_name=TITLE&artist_name=ARTIST
+```
+
+Album is optional. Select a matching recording with nonempty `syncedLyrics`. Save that decoded string as UTF-8 LRC, not JSON. `plainLyrics` has no timing. Video intros/outros and live versions can affect the duration match; check synchronization near the beginning, middle, and end. If no suitable timed lyrics exist, report that and request an LRC; never invent timestamps. Honor API retry instructions. Reference: https://lrclib.net/docs
+
+Each file contains only its own language. Translate faithfully, preserving cue order, repetition, and every timestamp. Example: `[00:12.34]Lyric text`. The current parser ignores `[offset:...]` metadata. Save assets locally; published posts need no LRCLIB requests.
+
+## Files and complete template
+
+Create `content/music/<slug>.en.md` and, when applicable, `<slug>.pt-br.md`. Put lyrics at `public/lyrics/<slug>/en.lrc` and `public/lyrics/<slug>/pt-br.lrc`.
+
+```markdown
+---
+title: "Original Title (English Title) — Artist"
+description: "Artist — Original Title, with synchronized Portuguese and English lyrics."
+slug: "song-slug"
+locale: "en"
+date: "YYYY-MM-DD"
+tags: ["Lyrics"]
+draft: false
+artist: "Artist"
+originalLanguage: "pt-BR"
+player:
+  youtubeUrl: "https://www.youtube.com/watch?v=VIDEO_ID"
+  subtitles:
+    en: "lyrics/song-slug/en.lrc"
+    pt-br: "lyrics/song-slug/pt-br.lrc"
+---
+Original Title by Artist, with Portuguese lyrics and an English translation.
+
+<!-- lyrics-player -->
+```
+
+Replace all placeholders. For Portuguese, localize title, description, body, and tags as appropriate; set `locale: "pt-br"`. Keep slug, date, video, and lyric paths shared.
+
+- Required fields: `title`, `description`, `slug`, `locale`, and quoted publication `date`. Use today's Brazilian date for a new post unless specified.
+- Slugs use lowercase ASCII letters/numbers and hyphens. Routes are `/PacBlog/<locale>/music/<slug>/`; no manual route registration is needed.
+- `description` appears in the header, listing, and SEO metadata. Keep it concise.
+- `tags` drive visible labels and filters. Reuse relevant existing spelling/capitalization, e.g. `MPB`, `Lyrics`, `Brazilian music`.
+- `artist` displays the performer. `originalLanguage` records the source language; it does not change the player's supported EN/PT pair.
+- Optional `credits: "Verified songwriting, performance, or translation credits."` displays plain text after the player/article.
+- `draft: true` excludes the page from publication. Both subtitle paths must exist, relative to `public/`, without a leading slash.
+- Use one player marker, outside panels/notes/code. Without it, the player follows the body. Existing controls and responsive styling apply automatically.
+- Legacy inline `lyrics` metadata is unnecessary for normal new posts. There are no supported per-post cover, offset, or player-layout fields; don't invent them.
+
+## Article formatting, only when needed
+
+Use normal Markdown: `##` headings, emphasis, lists, tables, links, images, and code. Raw HTML is disabled.
+
+Short mouseover:
+
+```markdown
+A [term](#note "Short explanation.").
+A [term](# An explanation with **Markdown** and (balanced parentheses)).
+```
+
+Long mouseover:
+
+```markdown
+A [term](#note-context).
+
+:::note context
+A **Markdown** explanation, with paragraphs or lists.
+:::
+```
+
+Use unique note IDs. Keep the reference and definition on the same side of the player marker. Define notes outside panels. Inline `(# ...)` syntax requires whitespace after `#` and balanced parentheses. Dotted underlines, positioning, keyboard/tap behavior, and the desktop arrow hint are automatic.
+
+Collapsed supplementary section:
+
+```markdown
+:::panel-collapsed More about this song
+Additional **Markdown** content.
+:::
+```
+
+Use `:::panel Title` to start open. Do not nest panels or place the player inside one. The expand dialog is automatic.
+
+Images belong in `public/images/`, referenced as `![Useful alt text](/PacBlog/images/file.ext)`. Internal links include the base and locale: `[Related song](/PacBlog/en/music/apesar-de-voce/)`. Add sources, related songs, or contextual sections only when supplied or requested.
+
+## Validate
+
+Run `npm run build` then `npm test` with dependencies installed. Check both requested routes, titles, lyric languages/timing, and any formatting used. Inspect the diff for placeholders and unrelated edits. Do not modify player code for ordinary content additions.
+
+During development, run `npm run content` or restart `npm run dev` after Markdown edits. Never edit generated JSON or `dist/` directly. Commit source Markdown and lyrics; follow the user's publishing instructions. Summarize changed pages and checks briefly.

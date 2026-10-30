@@ -54,6 +54,8 @@ Open `/PacBlog/pt-br/` or `/PacBlog/en/`. Markdown is compiled before dev starts
 
 ## Add an article
 
+For music posts, follow [the music-post recipe](docs/music-posts.md), including YouTube/LRC inputs, bilingual titles, and formatting.
+
 Create a Markdown file in `content/blog/` or `content/music/`:
 
 ```yaml
