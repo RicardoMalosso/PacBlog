@@ -5,8 +5,16 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { prepareNotes } from '../postNotes';
 
-export function Note({label,text}: {label:React.ReactNode;text:string}) {
+export function Note({label,text,onOpenChange}: {label:React.ReactNode;text:string;onOpenChange?: (open:boolean)=>void}) {
   const id = useId(); const [open,setOpen] = useState(false);
+  // Keep hover callbacks current without restarting the effect on each video time update.
+  const onOpenChangeRef = useRef(onOpenChange);
+  onOpenChangeRef.current = onOpenChange;
+  useEffect(() => {
+    if (!open) return;
+    onOpenChangeRef.current?.(true);
+    return () => onOpenChangeRef.current?.(false);
+  }, [open]);
   const [mounted, setMounted] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const show = () => { clearTimeout(closeTimer.current); setOpen(true); };

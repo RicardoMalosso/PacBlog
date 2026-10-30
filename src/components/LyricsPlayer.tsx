@@ -28,7 +28,7 @@ export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { 
     for (const note of notes) {
       const at = text.indexOf(note.text, cursor);
       if (at < 0) continue;
-      parts.push(text.slice(cursor, at), <span key={at} onClick={e => e.stopPropagation()} onKeyDown={e => e.stopPropagation()}><Note label={note.text} text={note.explanation}/></span>);
+      parts.push(text.slice(cursor, at), <span key={at} onClick={e => e.stopPropagation()} onKeyDown={e => e.stopPropagation()}><Note label={note.text} text={note.explanation} onOpenChange={onLyricNoteOpenChange}/></span>);
       cursor = at + note.text.length;
     }
     parts.push(text.slice(cursor)); return parts;
@@ -58,6 +58,31 @@ export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { 
     } catch { setFullscreenError(true); }
   };
   const mount = useRef<HTMLDivElement>(null); const player = useRef<Player | null>(null); const lyricsRef = useRef<HTMLDivElement>(null); const lyricsHeader = useRef<HTMLDivElement>(null); const started = useRef(false); const volumeLockUntil = useRef(0);
+  // Only resume playback when the first hovered explanation actually paused a playing video.
+  // Count open explanations so moving between overlapping tooltips does not resume prematurely.
+  const notePlayback = useRef({open: 0, resume: false});
+  const onLyricNoteOpenChange = (open: boolean) => {
+    const state = notePlayback.current;
+    const video = player.current;
+    if (open) {
+      if (state.open++ > 0) return;
+      state.resume = false;
+      if (!video) return;
+      try {
+        if (video.getPlayerState() === 1) {
+          state.resume = true;
+          video.pauseVideo();
+        }
+      } catch { state.resume = false; }
+      return;
+    }
+    if (state.open === 0 || --state.open > 0) return;
+    const shouldResume = state.resume;
+    state.resume = false;
+    if (shouldResume && video) {
+      try { if (video.getPlayerState() === 2) video.playVideo(); } catch { /* player no longer ready */ }
+    }
+  };
   const [rows, setRows] = useState<LyricRow[]>([]); const [loadError, setLoadError] = useState('');
   const [playerError, setPlayerError] = useState(false); const [ready, setReady] = useState(false);
   const [time, setTime] = useState(0); const [duration, setDuration] = useState(0); const [playing, setPlaying] = useState(false);
@@ -102,6 +127,8 @@ export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { 
           onStateChange: (event: { data: number }) => {
             if (cancelled) return;
             setPlaying(event.data === 1);
+            // An explicit play while a note is open overrides its pending auto-resume.
+            if (event.data === 1 && notePlayback.current.open > 0) notePlayback.current.resume = false;
             if (event.data === 1 && !started.current) { started.current = true; if (document.fullscreenElement !== videoShell.current) lyricsHeader.current?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); }
           },
           onError: () => { if (!cancelled) setPlayerError(true); },
@@ -125,7 +152,7 @@ export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { 
   const center = useMemo(() => nearbyRow(rows, adjustedTime), [rows, adjustedTime]);
   const displayed = expanded ? rows.map((row, index) => ({row, index})) : rows.map((row, index) => ({row, index})).filter(({index}) => index >= center - 1 && index <= center + 1);
   const seek = (seconds: number) => { const p = player.current; if (!p || !ready) return; const next = Math.max(0, Math.min(duration || Number.MAX_SAFE_INTEGER, seconds)); p.seekTo(next, true); setTime(next); };
-  const toggle = () => { const p = player.current; if (!p || !ready) return; if (p.getPlayerState() === 1) p.pauseVideo(); else p.playVideo(); };
+  const toggle = () => { const p = player.current; if (!p || !ready) return; if (notePlayback.current.open > 0) notePlayback.current.resume = false; if (p.getPlayerState() === 1) p.pauseVideo(); else p.playVideo(); };
   const seekRef = useRef(seek), toggleRef = useRef(toggle); seekRef.current = seek; toggleRef.current = toggle;
   useEffect(() => {
     const key = (e: KeyboardEvent) => {
