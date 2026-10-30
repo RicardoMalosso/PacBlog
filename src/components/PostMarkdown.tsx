@@ -7,10 +7,16 @@ import { prepareNotes } from '../postNotes';
 
 export function Note({label,text}: {label:React.ReactNode;text:string}) {
   const id = useId(); const [open,setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const show = () => { clearTimeout(closeTimer.current); setOpen(true); };
+  const hide = () => { clearTimeout(closeTimer.current); closeTimer.current = setTimeout(() => setOpen(false), 120); };
+  useEffect(() => { setMounted(true); return () => clearTimeout(closeTimer.current); }, []);
   const anchor = useRef<HTMLSpanElement>(null);
   const box = useRef<HTMLSpanElement>(null);
   useLayoutEffect(() => {
-    const trigger = anchor.current!, tooltip = box.current!;
+    const trigger = anchor.current, tooltip = box.current;
+    if (!trigger || !tooltip) return;
     const position = () => {
       const rect = trigger.getBoundingClientRect();
       const viewport = window.visualViewport;
@@ -43,8 +49,8 @@ export function Note({label,text}: {label:React.ReactNode;text:string}) {
       window.visualViewport?.removeEventListener('scroll', position);
       observer.disconnect();
     };
-  }, [text]);
-  return <span ref={anchor} className={`post-note ${open ? 'note-open' : ''}`} onKeyDown={e=>{if(e.key==='Escape')setOpen(false);}}><button type="button" aria-describedby={id} aria-expanded={open} onClick={()=>setOpen(x=>!x)} onBlur={()=>setOpen(false)}>{label}</button><span ref={box} id={id} className="post-note-box" role="tooltip" style={{position:'fixed', bottom:'auto', transform:'none', zIndex:110}}><ReactMarkdown remarkPlugins={[remarkGfm]} components={{p:({children})=><span className="note-paragraph">{children}</span>,ul:({children})=><span role="list" className="note-list">{children}</span>,ol:({children})=><span role="list" className="note-list">{children}</span>,li:({children})=><span role="listitem" className="note-list-item">{children}</span>,h1:({children})=><span className="note-heading">{children}</span>,h2:({children})=><span className="note-heading">{children}</span>,h3:({children})=><span className="note-heading">{children}</span>}}>{text}</ReactMarkdown></span></span>;
+  }, [text, mounted, open]);
+  return <span ref={anchor} onMouseEnter={show} onMouseLeave={hide} onFocus={show} className={`post-note ${open ? 'note-open' : ''}`} onKeyDown={e=>{if(e.key==='Escape')setOpen(false);}}><button type="button" aria-describedby={id} aria-expanded={open} onClick={()=>setOpen(x=>!x)} onBlur={()=>setOpen(false)}>{label}</button>{mounted && createPortal(<span onMouseEnter={show} onMouseLeave={hide} onKeyDown={e => {if(e.key === 'Escape')setOpen(false);}} ref={box} id={id} className="post-note-box" role="tooltip" style={{position:'fixed', bottom:'auto', transform:'none', zIndex:1000, opacity:open ? 1 : 0, visibility:open ? 'visible' : 'hidden', textAlign:'left'}}><ReactMarkdown remarkPlugins={[remarkGfm]} components={{p:({children})=><span className="note-paragraph">{children}</span>,ul:({children})=><span role="list" className="note-list">{children}</span>,ol:({children})=><span role="list" className="note-list">{children}</span>,li:({children})=><span role="listitem" className="note-list-item">{children}</span>,h1:({children})=><span className="note-heading">{children}</span>,h2:({children})=><span className="note-heading">{children}</span>,h3:({children})=><span className="note-heading">{children}</span>}}>{text}</ReactMarkdown></span>, document.body)}</span>;
 }
 function Markdown({text,notes={}}: {text:string;notes?:Record<string,string>}) {
   return <ReactMarkdown remarkPlugins={[remarkGfm]} components={{a:({href,title,children})=>href && notes[href] ? <Note label={children} text={notes[href]}/> : href === '#note' && title ? <Note label={children} text={title}/> : <a href={href} title={title}>{children}</a>}}>{text}</ReactMarkdown>;
