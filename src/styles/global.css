@@ -2191,3 +2191,9 @@ main:focus {
         transition: none
     }
 }
+/* Lift an annotated lyric row above sibling rows while its note is visible. */
+.sync-row:has(.post-note:hover),
+.sync-row:has(.post-note:focus-within),
+.sync-row:has(.post-note.note-open) {
+    z-index: 2;
+}
