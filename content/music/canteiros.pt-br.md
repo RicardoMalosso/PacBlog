@@ -1,5 +1,5 @@
 ---
-title: "Canteiros — Zé Ramalho & Fagner"
+title: "Canteiros — Zé Ramalho e Fagner"
 description: "Canteiros, com Zé Ramalho e Fagner, com letra sincronizada em português e tradução para o inglês."
 slug: "canteiros"
 locale: "pt-br"
