@@ -1,5 +1,5 @@
 ---
-title: "Canteiros (Flowerbeds) — Zé Ramalho & Fagner"
+title: "Canteiros (Flowerbeds) — Zé Ramalho and Fagner"
 description: "Zé Ramalho & Fagner — Canteiros (Flowerbeds), with synchronized Portuguese lyrics and an English translation."
 slug: "canteiros"
 locale: "en"
