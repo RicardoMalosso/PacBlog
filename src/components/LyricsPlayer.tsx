@@ -21,7 +21,7 @@ function youtubeApi(): Promise<YTNamespace> {
   return apiPromise!;
 }
 export type MusicPlayerConfig = { youtubeId: string; subtitles?: { en: string; 'pt-br': string }; lrc?: string; lyricLabel?: string; offsetMs?: number };
-export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { lyricNotes?: LyricNote[]; config: MusicPlayerConfig; onDuration?: (duration: number) => void }) {
+export default function LyricsPlayer({ config, onDuration, lyricNotes = [], originalLanguage = 'pt-BR' }: { lyricNotes?: LyricNote[]; originalLanguage?: string; config: MusicPlayerConfig; onDuration?: (duration: number) => void }) {
   const annotated = (text: string, start: number, language: 'en' | 'pt-br') => {
     const notes = lyricNotes.filter(n => n.language === language && Math.abs(n.time.split(':').reduce((a, v) => a * 60 + Number(v), 0) - start) < 0.005);
     const parts: React.ReactNode[] = []; let cursor = 0;
@@ -221,7 +221,7 @@ export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { 
         {fullscreen && <div className="fullscreen-lyrics" aria-label={t('lyricsPlayer')}>
           {rows.slice(Math.max(0, center - 1), center + 2).map((row) => <div key={row.start} className={rows[current] === row ? 'fullscreen-lyric is-current' : 'fullscreen-lyric'}>
             {config.lrc === undefined && <span lang="en">{row.en?.text || ''}</span>}
-            <span lang={config.lrc === undefined ? 'pt-BR' : undefined}>{row.pt?.text || ''}</span>
+            <span lang={config.lrc === undefined ? originalLanguage : undefined}>{row.pt?.text || ''}</span>
           </div>)}
           {loadError && <p role="status">{t(loadError)}</p>}
         </div>}<noscript><a href={`https://www.youtube.com/watch?v=${config.youtubeId}`}>{t('watchOnYoutube')} ↗</a></noscript>{playerError && <p className="player-error">{t('videoError')} <a href={`https://www.youtube.com/watch?v=${config.youtubeId}`}>{t('watchOnYoutube')} ↗</a></p>}</div>
@@ -229,10 +229,10 @@ export default function LyricsPlayer({ config, onDuration, lyricNotes = [] }: { 
         <label className="pause-on-hover-toggle"><input type="checkbox" checked={pauseOnLyricHover} onChange={e => changePauseOnLyricHover(e.target.checked)}/>{t('pauseOnLyricHover')}</label>
         {!ready && !playerError && <p className="player-status">{t('loadingPlayer')}</p>}</div>
     </div>
-    <div ref={lyricsHeader} className="lyric-controls"><div className="lyric-column-headings"><span>{t('timestamp')}</span>{config.lrc !== undefined ? <><span></span><span>{config.lyricLabel || t('lyricsPlayer')}</span></> : <><span>🇨🇦 English</span><span>🇧🇷 Português</span></>}</div>{expanded && !following && <button onClick={() => setFollowing(true)}>{t('followLine')}</button>}</div>
+    <div ref={lyricsHeader} className="lyric-controls"><div className="lyric-column-headings"><span>{t('timestamp')}</span>{config.lrc !== undefined ? <><span></span><span>{config.lyricLabel || t('lyricsPlayer')}</span></> : <><span>🇨🇦 English</span><span>{originalLanguage === 'es-PR' ? '🇵🇷 Español / Português' : '🇧🇷 Português'}</span></>}</div>{expanded && !following && <button onClick={() => setFollowing(true)}>{t('followLine')}</button>}</div>
     {loadError && <p className="notice" role="status">{t(loadError)}</p>}
     <div ref={lyricsRef} className={`synced-lyrics ${expanded ? 'is-expanded' : 'is-compact'}`} onWheel={stopFollowing} onTouchMove={stopFollowing} onKeyDown={e => {if (['PageUp','PageDown','Home','End'].includes(e.key)) stopFollowing();}} tabIndex={expanded ? 0 : undefined} aria-label={t('lyricsPlayer')}>
-      <span aria-hidden="true" className="lyric-highlight" style={highlight ? { transform: `translateY(${highlight.top}px)`, height: highlight.height, opacity: 1 } : { opacity: 0 }}/>{displayed.map(({row, index}) => <div role="button" tabIndex={0} onKeyDown={e => {if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {e.preventDefault(); e.stopPropagation(); seek(videoTimeForLyric(row.start, offsetMs));setFollowing(true);}}} className={`sync-row ${current === index ? 'is-current' : ''}`} data-current={current === index} key={`${row.start}-${index}`} onClick={() => {seek(videoTimeForLyric(row.start, offsetMs));setFollowing(true);}} aria-label={`${formatTime(videoTimeForLyric(row.start, offsetMs))} ${row.en?.text || ''} ${row.pt?.text || ''}`}><span className="sync-time mono">{formatTime(videoTimeForLyric(row.start, offsetMs))}</span><span className="sync-en" lang="en">{annotated(row.en?.text || '', row.en?.start ?? row.start, 'en')}</span><span className="sync-pt" lang={config.lrc !== undefined ? undefined : "pt-BR"}>{annotated(row.pt?.text || '', row.pt?.start ?? row.start, 'pt-br')}</span></div>)}
+      <span aria-hidden="true" className="lyric-highlight" style={highlight ? { transform: `translateY(${highlight.top}px)`, height: highlight.height, opacity: 1 } : { opacity: 0 }}/>{displayed.map(({row, index}) => <div role="button" tabIndex={0} onKeyDown={e => {if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {e.preventDefault(); e.stopPropagation(); seek(videoTimeForLyric(row.start, offsetMs));setFollowing(true);}}} className={`sync-row ${current === index ? 'is-current' : ''}`} data-current={current === index} key={`${row.start}-${index}`} onClick={() => {seek(videoTimeForLyric(row.start, offsetMs));setFollowing(true);}} aria-label={`${formatTime(videoTimeForLyric(row.start, offsetMs))} ${row.en?.text || ''} ${row.pt?.text || ''}`}><span className="sync-time mono">{formatTime(videoTimeForLyric(row.start, offsetMs))}</span><span className="sync-en" lang="en">{annotated(row.en?.text || '', row.en?.start ?? row.start, 'en')}</span><span className="sync-pt" lang={config.lrc === undefined ? originalLanguage : undefined}>{annotated(row.pt?.text || '', row.pt?.start ?? row.start, 'pt-br')}</span></div>)}
       {!rows.length && !loadError && <p className="player-status">{t(config.lrc !== undefined ? 'chooseSyncedLyrics' : 'loadingLyrics')}</p>}
     </div>
     <div className="lyrics-sync" role="group" aria-label={t('syncPrompt')}>
