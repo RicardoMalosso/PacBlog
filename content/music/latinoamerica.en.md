@@ -14,17 +14,9 @@ player:
     en: "lyrics/latinoamerica/en.lrc"
     pt-br: "lyrics/latinoamerica/original.lrc"
 lyricNotes:
-  - time: "00:05.25"
-    language: "en"
-    text: "I am, I am"
-    explanation: "Residente, the Puerto Rican rapper and co-founder of Calle 13, opens the song."
-  - time: "00:05.25"
-    language: "pt-br"
-    text: "Soy, soy"
-    explanation: "Residente, the Puerto Rican rapper and co-founder of Calle 13, opens the song."
   - time: "00:47.42"
     language: "en"
-    text: "Maradona scoring two goals against you, England"
+    text: "Maradona scoring two goals against England"
     explanation: "Maradona scored both goals in Argentina’s 2–1 win over England in the 1986 World Cup quarterfinal. He punched in the first, the “Hand of God,” then dribbled from his own half for the “Goal of the Century.” The match came four years after the Malvinas/Falklands War."
   - time: "00:47.42"
     language: "pt-br"
@@ -105,11 +97,11 @@ lyricNotes:
   - time: "04:02.76"
     language: "en"
     text: "Operation Condor"
-    explanation: "Operation Condor was a network formalized in 1975 by South American military dictatorships. Their security services shared intelligence and coordinated kidnappings, torture, forced disappearances, and assassinations of political opponents across borders, including people who had fled into exile."
+    explanation: "Operation Condor was a cross-border campaign of political repression organized in 1975 by South American military dictatorships backed by the United States. Their security services kidnapped, tortured, disappeared, and murdered political opponents, including exiles. Washington knew about the assassination plans, and Secretary of State Henry Kissinger canceled a warning to the regimes in 1976. That U.S. role belongs to a longer history of treating Latin America as a sphere of influence under the [Monroe Doctrine](https://en.wikipedia.org/wiki/Monroe_Doctrine)."
   - time: "04:02.76"
     language: "pt-br"
     text: "Operación Cóndor"
-    explanation: "Operation Condor was a network formalized in 1975 by South American military dictatorships. Their security services shared intelligence and coordinated kidnappings, torture, forced disappearances, and assassinations of political opponents across borders, including people who had fled into exile."
+    explanation: "Operation Condor was a cross-border campaign of political repression organized in 1975 by South American military dictatorships backed by the United States. Their security services kidnapped, tortured, disappeared, and murdered political opponents, including exiles. Washington knew about the assassination plans, and Secretary of State Henry Kissinger canceled a warning to the regimes in 1976. That U.S. role belongs to a longer history of treating Latin America as a sphere of influence under the [Monroe Doctrine](https://en.wikipedia.org/wiki/Monroe_Doctrine)."
 ---
 “Latinoamérica” by Calle 13, featuring Totó la Momposina, Susana Baca, and Maria Rita, with synchronized original lyrics and an English translation.
 
