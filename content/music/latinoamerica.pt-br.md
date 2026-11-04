@@ -1,5 +1,5 @@
 ---
-title: "🇵🇷 Latinoamérica — Calle 13"
+title: "Latinoamérica — Calle 13"
 description: "“Latinoamérica”, do Calle 13, com Totó la Momposina, Susana Baca e Maria Rita, com letra original sincronizada e tradução para o inglês."
 slug: "latinoamerica"
 locale: "pt-br"
