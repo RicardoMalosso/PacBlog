@@ -1541,6 +1541,11 @@ main:focus {
     text-align: right
 }
 
+.mixed-lyrics-heading,
+.mixed-lyrics-text {
+    text-align: center
+}
+
 .synced-lyrics {
     position: relative;
     margin-top: 12px
