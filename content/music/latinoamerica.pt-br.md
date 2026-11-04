@@ -14,17 +14,9 @@ player:
     en: "lyrics/latinoamerica/en.lrc"
     pt-br: "lyrics/latinoamerica/original.lrc"
 lyricNotes:
-  - time: "00:05.25"
-    language: "en"
-    text: "I am, I am"
-    explanation: "Residente, rapper porto-riquenho e cofundador do Calle 13, abre a música."
-  - time: "00:05.25"
-    language: "pt-br"
-    text: "Soy, soy"
-    explanation: "Residente, rapper porto-riquenho e cofundador do Calle 13, abre a música."
   - time: "00:47.42"
     language: "en"
-    text: "Maradona scoring two goals against you, England"
+    text: "Maradona scoring two goals against England"
     explanation: "Maradona marcou os dois gols da vitória argentina por 2 a 1 sobre a Inglaterra nas quartas da Copa de 1986. Fez o primeiro com a mão, a “Mão de Deus”, e arrancou do próprio campo para marcar o “Gol do Século”. A partida aconteceu quatro anos após a Guerra das Malvinas."
   - time: "00:47.42"
     language: "pt-br"
@@ -105,11 +97,11 @@ lyricNotes:
   - time: "04:02.76"
     language: "en"
     text: "Operation Condor"
-    explanation: "A Operação Condor foi uma rede formalizada em 1975 pelas ditaduras militares sul-americanas. Seus órgãos de repressão compartilharam informações e coordenaram sequestros, torturas, desaparecimentos forçados e assassinatos de opositores além das fronteiras, inclusive de pessoas exiladas."
+    explanation: "A Operação Condor foi uma campanha de repressão política transnacional organizada em 1975 por ditaduras militares sul-americanas apoiadas pelos Estados Unidos. Seus órgãos de repressão sequestraram, torturaram, fizeram desaparecer e assassinaram opositores, inclusive exilados. Washington sabia dos planos de assassinato, e o secretário de Estado Henry Kissinger cancelou uma advertência aos regimes em 1976. Esse papel dos EUA faz parte de uma história mais longa de tratar a América Latina como esfera de influência sob a [Doutrina Monroe](https://pt.wikipedia.org/wiki/Doutrina_Monroe)."
   - time: "04:02.76"
     language: "pt-br"
     text: "Operación Cóndor"
-    explanation: "A Operação Condor foi uma rede formalizada em 1975 pelas ditaduras militares sul-americanas. Seus órgãos de repressão compartilharam informações e coordenaram sequestros, torturas, desaparecimentos forçados e assassinatos de opositores além das fronteiras, inclusive de pessoas exiladas."
+    explanation: "A Operação Condor foi uma campanha de repressão política transnacional organizada em 1975 por ditaduras militares sul-americanas apoiadas pelos Estados Unidos. Seus órgãos de repressão sequestraram, torturaram, fizeram desaparecer e assassinaram opositores, inclusive exilados. Washington sabia dos planos de assassinato, e o secretário de Estado Henry Kissinger cancelou uma advertência aos regimes em 1976. Esse papel dos EUA faz parte de uma história mais longa de tratar a América Latina como esfera de influência sob a [Doutrina Monroe](https://pt.wikipedia.org/wiki/Doutrina_Monroe)."
 ---
 “Latinoamérica”, do Calle 13, com Totó la Momposina, Susana Baca e Maria Rita, com letra original sincronizada e tradução para o inglês.
 
