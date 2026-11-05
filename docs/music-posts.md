@@ -60,7 +60,7 @@ Original Title by Artist, with Portuguese lyrics and an English translation.
 Replace all placeholders. For Portuguese, localize title, description, body, and tags as appropriate; set `locale: "pt-br"`. Keep slug, date, video, and lyric paths shared.
 
 - Required fields: `title`, `description`, `slug`, `locale`, and quoted publication `date`. Use today's Brazilian date for a new post unless specified.
-- Slugs use lowercase ASCII letters/numbers and hyphens. Routes are `/PacLab/<locale>/music/<slug>/`; no manual route registration is needed.
+- Slugs use lowercase ASCII letters/numbers and hyphens. Routes are `/<locale>/music/<slug>/`; no manual route registration is needed.
 - `description` appears in the header, listing, and SEO metadata. Keep it concise.
 - `tags` drive visible labels and filters. Reuse relevant existing spelling/capitalization, e.g. `MPB`, `Lyrics`, `Brazilian music`.
 - `artist` displays the performer. `originalLanguage` records the source language; it does not change the player's supported EN/PT pair.
@@ -103,7 +103,7 @@ Additional **Markdown** content.
 
 Use `:::panel Title` to start open. Do not nest panels or place the player inside one. The expand dialog is automatic.
 
-Images belong in `public/images/`, referenced as `![Useful alt text](/PacLab/images/file.ext)`. Internal links include the base and locale: `[Related song](/PacLab/en/music/apesar-de-voce/)`. Add sources, related songs, or contextual sections only when supplied or requested.
+Images belong in `public/images/`, referenced as `![Useful alt text](/images/file.ext)`. Internal links include the base and locale: `[Related song](/en/music/apesar-de-voce/)`. Add sources, related songs, or contextual sections only when supplied or requested.
 
 ## Validate
 
