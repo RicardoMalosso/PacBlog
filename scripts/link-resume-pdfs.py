@@ -8,13 +8,13 @@ FILES = {"Ricardo_Malosso_Resume_EN.pdf": ("en", "Portfolio"),
 
 for filename, (locale, label) in FILES.items():
     path = ROOT / "public" / "resumes" / filename
-    uri = f"https://ricardomalosso.github.io/PacBlog/{locale}/"
+    uri = f"https://ricardomalosso.github.io/PacLab/{locale}/"
     doc = fitz.open(path)
     changed = False
     for page in doc:
         if any(link.get("uri") == uri for link in page.get_links()):
             continue
-        text = f"{label}: ricardomalosso.github.io/PacBlog/{locale}/"
+        text = f"{label}: ricardomalosso.github.io/PacLab/{locale}/"
         size = 7
         width = fitz.get_text_length(text, fontname="helv", fontsize=size)
         x = (page.rect.width - width) / 2

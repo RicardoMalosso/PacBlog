@@ -2,7 +2,7 @@
 
 Ricardo Malosso’s bilingual portfolio, blog, music pages, and browser experiments.
 
-**Production target:** https://ricardomalosso.github.io/PacBlog/
+**Production target:** https://ricardomalosso.github.io/PacLab/
 
 ## Stack
 
@@ -17,7 +17,7 @@ npm ci
 npm run dev
 ```
 
-Open the printed URL with `/PacBlog/` appended. To check the actual static export:
+Open the printed URL with `/PacLab/` appended. To check the actual static export:
 
 ```sh
 npm run build
@@ -25,7 +25,7 @@ npm test
 npm run preview
 ```
 
-Open `/PacBlog/pt-br/` or `/PacBlog/en/`. Markdown is compiled before dev starts; after editing content, restart `npm run dev` (or run `npm run content` while Vite is running).
+Open `/PacLab/pt-br/` or `/PacLab/en/`. Markdown is compiled before dev starts; after editing content, restart `npm run dev` (or run `npm run content` while Vite is running).
 
 ## Deploy on GitHub Pages
 
@@ -33,7 +33,7 @@ Open `/PacBlog/pt-br/` or `/PacBlog/en/`. Markdown is compiled before dev starts
 2. Push to `main`. `.github/workflows/pages.yml` installs pinned dependencies with `npm ci`, checks TypeScript, builds, runs export checks, and deploys `dist/`.
 3. PRs build and test without deploying. You can also run the workflow manually from Actions.
 
-`vite.config.ts` defaults to `/PacBlog/`. `BASE_PATH=/ npm run build` produces a root-hosted export for a future custom domain. Update `siteUrl` in `src/data.ts` at the same time. No SPA rewrite service is required: every published content route has its own `index.html`, and unknown routes receive GitHub Pages’ native 404.
+`vite.config.ts` defaults to `/PacLab/`. `BASE_PATH=/ npm run build` produces a root-hosted export for a future custom domain. Update `siteUrl` in `src/data.ts` at the same time. No SPA rewrite service is required: every published content route has its own `index.html`, and unknown routes receive GitHub Pages’ native 404.
 
 ## Structure
 

@@ -15,7 +15,7 @@ player:
 
 This is the first installment of my series on Brazilian music, where I'll be sharing some of my favorite songs from Brazil, along with some history and cultural context.
 
-[words or terms with dotted underlines](# ![Put your mouse over the thing award](/PacBlog/images/mouseover-award.svg)) can be moused-over to display an explanation or some more context.
+[words or terms with dotted underlines](# ![Put your mouse over the thing award](/PacLab/images/mouseover-award.svg)) can be moused-over to display an explanation or some more context.
 
 We're starting with **Construção** (*Construction*), by [**Chico Buarque**](https://en.wikipedia.org/wiki/Chico_Buarque), released in **1971**. It follows a construction worker's final day through a combination of everyday details, unsettling images, and carefully arranged repetition.
 
@@ -69,4 +69,4 @@ Some listeners hear the three sections as different accounts of the same death; 
 
 For further reading on how the orchestration communicates meaning in this song, see Gil Jardim's [“Arrangement as the Structure and Fabric of Musical Discourse”](https://revistas.usp.br/revusp/pt_BR/article/view/127599) (in Portuguese).
 
-By the way, If you enjoyed this, you might also enjoy this [other song by chico](https://ricardomalosso.github.io/PacBlog/en/music/apesar-de-voce/) is even less subtle about the criticism to the military dictatorship.
+By the way, If you enjoyed this, you might also enjoy this [other song by chico](https://ricardomalosso.github.io/PacLab/en/music/apesar-de-voce/) is even less subtle about the criticism to the military dictatorship.

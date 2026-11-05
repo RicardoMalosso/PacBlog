@@ -9,7 +9,7 @@ E-mail: ricardomalosso@gmail.com | Telefone: +55 11 95143 6867
 LinkedIn: https://www.linkedin.com/in/ricardo-rodrigues-malosso-9b4848112/
 
 GitHub: https://github.com/RicardoMalosso  
-Portfólio: [ricardomalosso.github.io/PacBlog/pt-br/](https://ricardomalosso.github.io/PacBlog/pt-br/)
+Portfólio: [ricardomalosso.github.io/PacLab/pt-br/](https://ricardomalosso.github.io/PacLab/pt-br/)
 
 ## Resumo profissional
 
