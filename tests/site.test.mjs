@@ -136,7 +136,7 @@ test('per-song lyric sync defaults are configured in both Naquela Mesa locales',
   assert.equal(pages.length, 2);
   for (const page of pages) {
     assert.equal(page.player.offsetMs, 1000);
-    assert(fs.readFileSync(outputFor(`/${page.locale}/music/naquela-mesa/`), 'utf8').includes('naquela mesa'));
+    assert(fs.readFileSync(outputFor(`/${page.locale}/music/naquela-mesa/`), 'utf8').includes(`<h1>${page.title}</h1>`));
   }
   assert(entries.some(x => x.section === 'music' && x.slug !== 'naquela-mesa' && x.player && x.player.offsetMs === undefined));
 
