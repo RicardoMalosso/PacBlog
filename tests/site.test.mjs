@@ -35,7 +35,7 @@ test('each published entry is rendered in both languages and translations retain
     const translated = entries.some(x => x.locale === other && x.section === entry.section && x.slug === entry.slug);
     assert.equal(alternatePath(route, other), translated ? `/${other}/${entry.section}/${entry.slug}/` : `/${other}/${entry.section}/?translation=missing`);
     assert(fs.existsSync(outputFor(alternatePath(route, other).split('?')[0])));
-    assert(fs.readFileSync(outputFor(route), 'utf8').includes(entry.title));
+    assert(fs.readFileSync(outputFor(route), 'utf8').toLowerCase().includes(entry.title.toLowerCase()));
   }
   assert.equal(alternatePath('/en/blog/untranslated/', 'pt-br'), '/pt-br/blog/?translation=missing');
 });
@@ -51,10 +51,10 @@ test('content validation rejects duplicate slugs', () => {
 test('interface strings are translated, with a Canadian flag for English', () => {
   const pt = fs.readFileSync('dist/pt-br/index.html', 'utf8');
   const en = fs.readFileSync('dist/en/index.html', 'utf8');
-  assert(pt.includes('Projetos selecionados'));
-  assert(en.includes('Selected projects'));
-  assert(pt.includes('🇨🇦 EN'));
-  assert(en.includes('🇧🇷 PT-BR'));
+  assert(pt.includes('projetos selecionados'));
+  assert(en.includes('selected projects'));
+  assert(pt.includes('🇨🇦 en'));
+  assert(en.includes('🇧🇷 pt-BR'));
   assert(!pt.includes('🇺🇸')); assert(!en.includes('🇺🇸'));
 });
 test('static 404, sitemap and publishing artifacts exist', () => {
@@ -65,13 +65,13 @@ test('static 404, sitemap and publishing artifacts exist', () => {
 });
 
 test('shared interface copy stays localized across every published page', () => {
-  const leakedEnglish = /Skip to content|Selected projects|DATA \/ VISUALIZATION|PYTHON \/ AI \/ AUDIO|Data visualization|Caching|Speech controls|Hear this project description/;
-  const leakedPortuguese = /Pular para o conteúdo|Projetos selecionados|DADOS \/ VISUALIZAÇÃO|PYTHON \/ IA \/ ÁUDIO|Visualização de dados|Controles de fala|Ouça a descrição deste projeto/;
+  const leakedEnglish = /Skip to content|selected projects|DATA \/ VISUALIZATION|PYTHON \/ AI \/ AUDIO|Data visualization|Caching|Speech controls|Hear this project description/;
+  const leakedPortuguese = /Pular para o conteúdo|projetos selecionados|DADOS \/ VISUALIZAÇÃO|PYTHON \/ IA \/ ÁUDIO|Visualização de dados|Controles de fala|Ouça a descrição deste projeto/;
   for (const route of routes.filter(route => /^\/(en|pt-br)\//.test(route))) {
     const html = fs.readFileSync(outputFor(route), 'utf8');
     const english = route.startsWith('/en/');
     assert(!((english ? leakedPortuguese : leakedEnglish).test(html)), `Mixed interface language at ${route}`);
-    assert(html.includes(`aria-label="Ricardo Malosso — ${english ? 'Portfolio' : 'Portfólio'}"`), route);
+    assert(html.includes(`aria-label="Ricardo Malosso — ${english ? 'portfolio' : 'portfólio'}"`), route);
   }
   assert(fs.readFileSync(outputFor('/pt-br/experiments/'), 'utf8').includes('6,34'));
   assert(fs.readFileSync(outputFor('/en/experiments/'), 'utf8').includes('6.34'));
@@ -82,7 +82,7 @@ test('résumé routes include localized content and both downloadable PDFs', () 
     const route = `/${locale}/resume/`;
     assert(routes.includes(route));
     const html = fs.readFileSync(outputFor(route), 'utf8');
-    assert(html.includes(`${title} · Ricardo Malosso`));
+    assert(html.includes(`${title.toLowerCase()} · ricardo malosso`));
     assert(html.includes(summary));
     assert(html.includes('Wipro'));
     assert(html.includes('CGI Group'));
@@ -126,7 +126,7 @@ test('music demo config links published subtitle files and localized post', () =
     assert.equal(entry.player.youtubeId, 'lU8j7lj4RdU');
     for (const file of Object.values(entry.player.subtitles)) assert(fs.existsSync(path.join('dist', file)));
     const html = fs.readFileSync(outputFor(`/${entry.locale}/music/${entry.slug}/`), 'utf8');
-    assert(html.includes(entry.locale === 'en' ? 'Show three lines' : 'Mostrar três versos'));
+    assert(html.includes(entry.locale === 'en' ? 'show three lines' : 'mostrar três versos'));
   }
 });
 
@@ -136,7 +136,7 @@ test('per-song lyric sync defaults are configured in both Naquela Mesa locales',
   assert.equal(pages.length, 2);
   for (const page of pages) {
     assert.equal(page.player.offsetMs, 1000);
-    assert(fs.readFileSync(outputFor(`/${page.locale}/music/naquela-mesa/`), 'utf8').includes('Naquela Mesa'));
+    assert(fs.readFileSync(outputFor(`/${page.locale}/music/naquela-mesa/`), 'utf8').includes('naquela mesa'));
   }
   assert(entries.some(x => x.section === 'music' && x.slug !== 'naquela-mesa' && x.player && x.player.offsetMs === undefined));
 

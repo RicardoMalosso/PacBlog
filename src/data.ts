@@ -1,15 +1,20 @@
 import entries from './content.generated.json';
 import type { Entry, Locale } from './types';
+// Lowercase editorial titles without changing brand names or technical notation.
+export function titleCase(text: string) {
+  return text.split(/(GitHub|LinkedIn|YouTube|PacTTSClone|OmniVoice|Twitch|OBS|Python|JavaScript|TypeScript|React|Node\.js|C#|\.NET|pt-BR|en-CA|PDF|MP3|TSE|WCAG|AI|IA)/g)
+    .map((part, index) => index % 2 ? part : part.toLowerCase()).join('');
+}
 export const content = entries as Entry[];
 export const base = import.meta.env.BASE_URL;
 export const siteUrl = 'https://ricardomalosso.github.io';
 export const projects = [
   { slug: 'pacttsclone', name: 'PacTTSClone', image: 'pacttsclone-studio.jpg', replay: null, repo: 'https://github.com/RicardoMalosso/PacTTSClone',
-    en: { category: 'PYTHON / AI / AUDIO', tags: ['Python', 'OmniVoice', 'Twitch / OBS'], description: 'Local voice generation, built for streamers.', detail: 'An application that runs on your computer and turns a reference MP3 and text into generated speech with OmniVoice. Includes saved voices, generation monitoring, and Twitch and OBS integrations.' },
-    'pt-br': { category: 'PYTHON / IA / ÁUDIO', tags: ['Python', 'OmniVoice', 'Twitch / OBS'], description: 'Geração de voz local, pensada para streamers.', detail: 'Uma aplicação executada localmente que transforma um MP3 de referência e um texto em fala com o OmniVoice. Inclui vozes salvas, monitoramento de geração e integrações com Twitch e OBS.' } },
-  { slug: 'election-tracker', name: 'Election Tracker', image: 'election-tracker-poster.jpg', replay: 'election-tracker-replay.gif', repo: null,
-    en: { category: 'DATA / VISUALIZATION', tags: ['TSE', 'Data visualization', 'Caching'], description: 'Making the vote count easier to follow.', detail: 'An election dashboard that collects official TSE results and presents the progress of the count. A shared cache and adaptive polling strategy reduce repeated requests as updates slow down.' },
-    'pt-br': { category: 'DADOS / VISUALIZAÇÃO', tags: ['TSE', 'Visualização de dados', 'Cache'], description: 'A apuração dos votos mais fácil de acompanhar.', detail: 'Um painel eleitoral que coleta resultados oficiais do TSE e apresenta a evolução da apuração. Um cache compartilhado e uma estratégia de consulta adaptativa reduzem requisições repetidas à medida que as atualizações ficam menos frequentes.' } },
+    en: { category: 'Python / AI / audio', tags: ['Python', 'OmniVoice', 'Twitch / OBS'], description: 'local voice generation, built for streamers.', detail: 'an application that runs on your computer and turns a reference MP3 and text into generated speech with OmniVoice. includes saved voices, generation monitoring, and Twitch and OBS integrations.' },
+    'pt-br': { category: 'Python / IA / áudio', tags: ['Python', 'OmniVoice', 'Twitch / OBS'], description: 'geração de voz local, pensada para streamers.', detail: 'uma aplicação executada localmente que transforma um MP3 de referência e um texto em fala com o OmniVoice. inclui vozes salvas, monitoramento de geração e integrações com Twitch e OBS.' } },
+  { slug: 'election-tracker', name: 'election tracker', image: 'election-tracker-poster.jpg', replay: 'election-tracker-replay.gif', repo: null,
+    en: { category: 'data / visualization', tags: ['TSE', 'data visualization', 'caching'], description: 'making the vote count easier to follow.', detail: 'an election dashboard that collects official TSE results and presents the progress of the count. a shared cache and adaptive polling strategy reduce repeated requests as updates slow down.' },
+    'pt-br': { category: 'dados / visualização', tags: ['TSE', 'visualização de dados', 'cache'], description: 'a apuração dos votos mais fácil de acompanhar.', detail: 'um painel eleitoral que coleta resultados oficiais do TSE e apresenta a evolução da apuração. um cache compartilhado e uma estratégia de consulta adaptativa reduzem requisições repetidas à medida que as atualizações ficam menos frequentes.' } },
 ];
 export const pathFor = (locale: Locale, section = '', slug = '') => `/${locale}/${section ? `${section}/` : ''}${slug ? `${slug}/` : ''}`;
 export const publicPath = (route: string) => `${base.replace(/\/$/, '')}${route}`;
@@ -24,7 +29,7 @@ export function routeMetadata(route: string) {
   const locale: Locale = first === 'en' ? 'en' : 'pt-br';
   const entry = content.find(x => x.locale === locale && x.section === section && x.slug === slug);
   const project = section === 'portfolio' ? projects.find(x => x.slug === slug) : undefined;
-  const labels = locale === 'en' ? { '': 'Portfolio', portfolio: 'Portfolio', blog: 'Blog', music: 'Music', experiments: 'Experiments', resume: 'Résumé', contact: 'Contact' } : { '': 'Portfólio', portfolio: 'Portfólio', blog: 'Blog', music: 'Música', experiments: 'Experimentos', resume: 'Currículo', contact: 'Contato' };
-  return { locale, title: `${entry?.title || project?.name || labels[section as keyof typeof labels] || '404'} · Ricardo Malosso`, description: entry?.description || project?.[locale].description || (locale === 'en' ? 'Software projects, development notes, music, and experiments by Ricardo Malosso.' : 'Projetos de software, notas de desenvolvimento, música e experimentos de Ricardo Malosso.') };
+  const labels = locale === 'en' ? { '': 'portfolio', portfolio: 'portfolio', blog: 'blog', music: 'music', experiments: 'experiments', resume: 'résumé', contact: 'contact' } : { '': 'portfólio', portfolio: 'portfólio', blog: 'blog', music: 'música', experiments: 'experimentos', resume: 'currículo', contact: 'contato' };
+  return { locale, title: `${titleCase(entry?.title || project?.name || labels[section as keyof typeof labels] || '404')} · ricardo malosso`, description: entry?.description || project?.[locale].description || (locale === 'en' ? 'Software projects, development notes, music, and experiments by Ricardo Malosso.' : 'Projetos de software, notas de desenvolvimento, música e experimentos de Ricardo Malosso.') };
 }
 export const routes = ['/', ...(['pt-br', 'en'] as Locale[]).flatMap(locale => [pathFor(locale), ...['blog', 'music', 'experiments', 'resume', 'contact'].map(section => pathFor(locale, section)), ...projects.map(x => pathFor(locale, 'portfolio', x.slug)), ...content.filter(x => x.locale === locale).map(x => pathFor(locale, x.section, x.slug))])];
