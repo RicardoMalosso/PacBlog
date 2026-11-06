@@ -16,6 +16,20 @@ for (const route of routes) {
   fs.writeFileSync(output, page(route));
 }
 fs.writeFileSync('dist/404.html', page('/pt-br/page-not-found/', true));
+// Keep previously shared PacBlog links working after moving to the domain root.
+for (const route of ['/en/music/', '/en/music/o-mundo-e-um-moinho/', '/en/music/construcao/']) {
+  const target = publicPath(route);
+  const output = path.join('dist', 'PacBlog', route, 'index.html');
+  fs.mkdirSync(path.dirname(output), { recursive: true });
+  fs.writeFileSync(output, `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/>
+<title>Page moved</title>
+<link rel="canonical" href="${escape(absolute(route))}"/>
+<meta name="robots" content="noindex"/>
+<script>location.replace(${JSON.stringify(target)} + location.search + location.hash);</script>
+<noscript><meta http-equiv="refresh" content="0;url=${escape(target)}"/></noscript>
+</head><body><p>This page has moved. <a href="${escape(target)}">Continue to the page</a>.</p></body></html>`);
+}
 fs.writeFileSync('dist/.nojekyll', '');
 fs.writeFileSync('dist/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${routes.map(route => `<url><loc>${absolute(route)}</loc></url>`).join('')}</urlset>`);
 fs.writeFileSync('dist/robots.txt', `User-agent: *\nAllow: /\nSitemap: ${absolute('/sitemap.xml')}\n`);
