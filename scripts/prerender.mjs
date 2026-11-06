@@ -15,9 +15,10 @@ for (const route of routes) {
   fs.mkdirSync(path.dirname(output), { recursive: true });
   fs.writeFileSync(output, page(route));
 }
-fs.writeFileSync('dist/404.html', page('/pt-br/page-not-found/', true));
+const legacyRedirect = String.raw`<script>if (/^\/pacblog(?:\/|$)/i.test(location.pathname)) location.replace(location.pathname.replace(/^\/pacblog(?=\/|$)/i, '').replace(/^$/, '/') + location.search + location.hash);</script>`;
+fs.writeFileSync('dist/404.html', page('/pt-br/page-not-found/', true).replace('<head>', '<head>' + legacyRedirect));
 // Keep previously shared PacBlog links working after moving to the domain root.
-for (const route of ['/en/music/', '/en/music/o-mundo-e-um-moinho/', '/en/music/construcao/']) {
+for (const route of routes) {
   const target = publicPath(route);
   const output = path.join('dist', 'PacBlog', route, 'index.html');
   fs.mkdirSync(path.dirname(output), { recursive: true });
